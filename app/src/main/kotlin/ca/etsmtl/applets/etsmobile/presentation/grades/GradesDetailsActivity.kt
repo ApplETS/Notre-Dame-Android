@@ -2,6 +2,7 @@ package ca.etsmtl.applets.etsmobile.presentation.grades
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +13,7 @@ import ca.etsmtl.applets.etsmobile.presentation.BaseActivity
 import ca.etsmtl.applets.etsmobile.presentation.gradesdetails.GradesDetailsFragment
 import ca.etsmtl.applets.etsmobile.util.show
 import ca.etsmtl.applets.repository.data.model.Cours
+import kotlinx.android.synthetic.main.activity_grades_details.appBarLayoutGradesDetails
 import kotlinx.android.synthetic.main.include_toolbar.toolbar
 
 /**
@@ -71,8 +73,8 @@ class GradesDetailsActivity : BaseActivity() {
                 }
 
                 supportActionBar?.let {
-                    it.title = this.sigle
-                    it.subtitle = this.titreCours
+                    it.title = sigle
+                    it.subtitle = titreCours
                 }
             }
         }
@@ -85,6 +87,13 @@ class GradesDetailsActivity : BaseActivity() {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
         }
+
+        appBarLayoutGradesDetails.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+                val maxScroll = appBarLayout.totalScrollRange
+                val ratio = 1 - Math.abs(verticalOffset) / maxScroll.toFloat()
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
