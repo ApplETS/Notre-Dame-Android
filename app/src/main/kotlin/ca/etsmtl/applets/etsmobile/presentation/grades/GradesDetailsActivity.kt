@@ -15,7 +15,6 @@ import ca.etsmtl.applets.etsmobile.util.show
 import ca.etsmtl.applets.repository.data.model.Cours
 import kotlinx.android.synthetic.main.activity_grades_details.appBarLayoutGradesDetails
 import kotlinx.android.synthetic.main.activity_grades_details.tvGradesDetailsSubtitle
-import kotlinx.android.synthetic.main.activity_grades_details.tvGradesDetailsTitle
 import kotlinx.android.synthetic.main.include_toolbar.toolbar
 
 /**
@@ -77,7 +76,6 @@ class GradesDetailsActivity : BaseActivity() {
                 supportActionBar?.let {
                     it.title = sigle
                 }
-                tvGradesDetailsTitle.text = sigle
                 tvGradesDetailsSubtitle.text = titreCours
             }
         }
@@ -118,6 +116,7 @@ class GradesDetailsActivity : BaseActivity() {
 
     override fun onBackPressed() {
         // Don't show the toolbar's content during the shared element transition
+        tvGradesDetailsSubtitle.show(false)
         toolbar.show(false)
 
         super.onBackPressed()
