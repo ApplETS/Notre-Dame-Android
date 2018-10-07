@@ -19,35 +19,43 @@
             android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppTheme.CollapsingToolbar.Collapsed"
             app:contentScrim="@color/colorPrimary"
-            app:expandedTitleGravity="center_vertical|bottom"
+            app:expandedTitleGravity="center_vertical"
             app:expandedTitleMarginStart="19dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppTheme.CollapsingToolbar.Expanded"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/containerTvGradesDetailsSubtitle"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:layout_collapseMode="parallax">
+                android:layout_height="125dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="8dp"
+                app:layout_collapseMode="parallax"
+                android:gravity="bottom">
 
                 <TextView
-                    android:id="@+id/tvGradesDetailsSubtitle"
+                    android:id="@+id/tvGradesDetailsCourseName"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="10dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
                     android:textColor="@color/colorToolbarText"
                     android:textSize="22sp"
                     app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="Systèmes d'applications mobiles" />
-            </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvGradesDetailsGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+                    android:textColor="@color/colorToolbarText"
+                    android:textSize="22sp"
+                    app:autoSizeTextType="uniform"
+                    tools:text="Groupe 01" />
+            </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
