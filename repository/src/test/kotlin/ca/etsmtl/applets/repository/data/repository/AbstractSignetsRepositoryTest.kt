@@ -7,6 +7,7 @@ import ca.etsmtl.applets.repository.data.api.ApiResponse
 import ca.etsmtl.applets.repository.data.api.response.signets.ApiSignetsData
 import ca.etsmtl.applets.repository.data.api.response.signets.ApiSignetsModel
 import ca.etsmtl.applets.repository.data.repository.signets.SignetsRepository
+import ca.etsmtl.applets.repository.data.repository.signets.networkOrSignetsError
 import ca.etsmtl.applets.repository.util.InstantAppExecutors
 import org.junit.Before
 import org.junit.Rule
@@ -42,7 +43,7 @@ class AbstractSignetsRepositoryTest {
         val response = Response.success(signetsModel)
         val apiResponse = ApiResponse<ApiSignetsModel<TestApiSignetsData>>(response)
 
-        assertNull(repo.getError(apiResponse))
+        assertNull(apiResponse.networkOrSignetsError)
     }
 
     @Test
@@ -51,7 +52,7 @@ class AbstractSignetsRepositoryTest {
         val throwable = Throwable(expectedErrorStr)
         val apiResponse = ApiResponse<ApiSignetsModel<TestApiSignetsData>>(throwable)
 
-        assertEquals(expectedErrorStr, repo.getError(apiResponse))
+        assertEquals(expectedErrorStr, apiResponse.errorMessage)
     }
 
     @Test
@@ -63,7 +64,7 @@ class AbstractSignetsRepositoryTest {
         val response = Response.success(signetsModel)
         val apiResponse = ApiResponse<ApiSignetsModel<TestApiSignetsData>>(response)
 
-        assertEquals(expectedErrorStr, repo.getError(apiResponse))
+        assertEquals(expectedErrorStr, apiResponse.networkOrSignetsError)
     }
 
     @Test

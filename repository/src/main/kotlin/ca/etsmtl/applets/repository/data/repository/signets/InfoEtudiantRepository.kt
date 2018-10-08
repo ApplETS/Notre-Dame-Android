@@ -49,7 +49,7 @@ class InfoEtudiantRepository @Inject constructor(
             override fun shouldFetch(data: Etudiant?): Boolean = shouldFetch(data)
 
             override fun loadFromDb(): LiveData<Etudiant> {
-                return Transformations.map(getFirstItemLiveData(dao.getAll())) {
+                return Transformations.map(dao.getAll().transformToFirstItemLiveData()) {
                     it?.toEtudiant()
                 }
             }

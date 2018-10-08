@@ -32,7 +32,7 @@ class GradesViewModel @Inject constructor(
     private var coursRes: LiveData<Resource<List<Cours>>>? = null
     val errorMessage: LiveData<Event<String?>> by lazy {
         Transformations.map(coursMediatorLiveData) {
-            if (it.status == Resource.ERROR) {
+            if (it.status == Resource.Status.ERROR) {
                 when {
                     !app.isDeviceConnected() -> {
                         Event(app.getString(R.string.error_no_internet_connection))
@@ -58,7 +58,7 @@ class GradesViewModel @Inject constructor(
         }
     }
     fun getLoading(): LiveData<Boolean> = Transformations.map(coursMediatorLiveData) {
-        it.status == Resource.LOADING
+        it.status == Resource.Status.LOADING
     }
 
     /**
@@ -66,7 +66,7 @@ class GradesViewModel @Inject constructor(
      * the list
      */
     fun getShowEmptyView(): LiveData<Boolean> = Transformations.map(coursMediatorLiveData) {
-        (it.status != Resource.LOADING && (it?.data == null || it.data?.isEmpty() == true))
+        (it.status != Resource.Status.LOADING && (it?.data == null || it.data?.isEmpty() == true))
     }
 
     private fun load() {

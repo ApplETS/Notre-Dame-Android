@@ -41,7 +41,7 @@ class GradesDetailsViewModel @Inject constructor(
     }
     val errorMessage: LiveData<Event<String?>> by lazy {
         Transformations.map(summaryAndEvaluationsMediatorLiveData) {
-            if (it.status == Resource.ERROR) {
+            if (it.status == Resource.Status.ERROR) {
                 when {
                     !app.isDeviceConnected() -> {
                         Event(app.getString(R.string.error_no_internet_connection))
@@ -87,7 +87,7 @@ class GradesDetailsViewModel @Inject constructor(
                 )
         )
 
-        it?.takeIf { it.status != Resource.LOADING }?.data?.let {
+        it?.takeIf { it.status != Resource.Status.LOADING }?.data?.let {
             val gradeAverageItem = it.sommaireElementsEvaluation.run {
                 GradeAverageItem(
                         cours.value?.cote,
@@ -131,11 +131,11 @@ class GradesDetailsViewModel @Inject constructor(
         }
     }
     val showEmptyView: LiveData<Boolean> = Transformations.map(summaryAndEvaluationsMediatorLiveData) {
-        (it.status != Resource.LOADING && (it?.data?.evaluations == null || it.data?.evaluations?.isEmpty() == true))
+        (it.status != Resource.Status.LOADING && (it?.data?.evaluations == null || it.data?.evaluations?.isEmpty() == true))
     }
 
     fun getLoading(): LiveData<Boolean> = Transformations.map(summaryAndEvaluationsMediatorLiveData) {
-        it.status == Resource.LOADING
+        it.status == Resource.Status.LOADING
     }
 
     private fun load() {

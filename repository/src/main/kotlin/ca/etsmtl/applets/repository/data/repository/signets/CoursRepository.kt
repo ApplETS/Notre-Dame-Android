@@ -81,11 +81,11 @@ class CoursRepository @Inject constructor(
                                             shouldFetch
                                     )) {
                                         mediatorLiveData.addSource(this) {
-                                            if (it?.status == Resource.SUCCESS && it.data != null) {
+                                            if (it?.status == Resource.Status.SUCCESS && it.data != null) {
                                                 coursEntity.noteSur100 = it.data.noteSur100
                                             }
 
-                                            if (it?.status != Resource.LOADING) {
+                                            if (it?.status != Resource.Status.LOADING) {
                                                 if (--nbCalls == 0) { // If this is the last call...
                                                     mediatorLiveData.value = ApiResponse(Response.success(list as List<CoursEntity>))
                                                 }

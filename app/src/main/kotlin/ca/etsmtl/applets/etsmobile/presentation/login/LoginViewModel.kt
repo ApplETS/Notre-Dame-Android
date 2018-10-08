@@ -11,8 +11,8 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.Transformations
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.presentation.App
-import ca.etsmtl.applets.etsmobile.presentation.main.MainActivity
 import ca.etsmtl.applets.etsmobile.presentation.about.AboutActivity
+import ca.etsmtl.applets.etsmobile.presentation.main.MainActivity
 import ca.etsmtl.applets.etsmobile.util.Event
 import ca.etsmtl.applets.etsmobile.util.call
 import ca.etsmtl.applets.etsmobile.util.isDeviceConnected
@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
         MediatorLiveData<Void>().apply {
             addSource(userCredentialsValid) {
                 it?.let {
-                    if (it.status != Resource.LOADING && it.data == false) {
+                    if (it.status != Resource.Status.LOADING && it.data == false) {
                         this.call()
                     }
                 }
@@ -54,7 +54,7 @@ class LoginViewModel @Inject constructor(
     val errorMessage: LiveData<Event<String>> by lazy {
         MediatorLiveData<Event<String>>().apply {
             this.addSource(userCredentialsValid) {
-                if (it != null && it.status == Resource.ERROR) {
+                if (it != null && it.status == Resource.Status.ERROR) {
                     this.value = Event(it.message ?: app.getString(R.string.error))
                 }
             }
@@ -104,7 +104,7 @@ class LoginViewModel @Inject constructor(
      * This is triggered after the user's credentials have been submitted.
      */
     val showLoading: LiveData<Boolean> = Transformations.map(userCredentialsValid) {
-        it.status == Resource.SUCCESS || it.status == Resource.LOADING
+        it.status == Resource.Status.SUCCESS || it.status == Resource.Status.LOADING
     }
 
     /**
@@ -159,7 +159,7 @@ class LoginViewModel @Inject constructor(
      * @return true if the resource is not null and that his status is [Resource.SUCCESS]
      */
     private fun userCredentialsValid(blnResource: Resource<Boolean>?): Boolean {
-        if (blnResource != null && blnResource.status == Resource.SUCCESS) {
+        if (blnResource != null && blnResource.status == Resource.Status.SUCCESS) {
             return blnResource.data!!
         }
 
@@ -177,14 +177,14 @@ class LoginViewModel @Inject constructor(
     private fun transformEtudiantResToBooleanRes(res: Resource<Etudiant>?): Resource<Boolean> {
         if (res != null) {
             when (res.status) {
-                Resource.SUCCESS -> {
+                Resource.Status.SUCCESS -> {
                     return Resource.success(true)
                 }
-                Resource.ERROR -> {
+                Resource.Status.ERROR -> {
                     val errorStr = getErrorMessage(res)
                     return Resource.error(errorStr, false)
                 }
-                Resource.LOADING -> {
+                Resource.Status.LOADING -> {
                     return Resource.loading(null)
                 }
             }
