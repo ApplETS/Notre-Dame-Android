@@ -97,9 +97,5 @@ class AbstractSignetsRepositoryTest {
 
     class TestSignetsRepository : SignetsRepository(InstantAppExecutors())
 
-    data class TestApiSignetsData(var erreur: String? = null) : ApiSignetsData() {
-        override fun getError(): String? {
-            return erreur
-        }
-    }
+    data class TestApiSignetsData(override var erreur: String? = null) : ApiSignetsData()
 }

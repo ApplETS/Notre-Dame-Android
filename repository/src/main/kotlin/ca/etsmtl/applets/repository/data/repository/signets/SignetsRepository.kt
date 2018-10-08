@@ -36,7 +36,6 @@ abstract class SignetsRepository(protected val appExecutors: AppExecutors) {
     }
 }
 
-
 /**
  * The [ApiResponse] error. If a network error occurred, the network error
  * will be returned. If not, the error inside the payload will be returned. If the request was
@@ -56,13 +55,12 @@ val ApiResponse<out ApiSignetsModel<out ApiSignetsData>>?.networkOrSignetsError:
         }
     }
 
-
 /**
  * The value of the error field
  */
 private val ApiSignetsModel<out ApiSignetsData>?.errorInsideData: String?
     get() {
-        this?.data?.let { return it.getError() }
+        this?.data?.let { return it.erreur }
 
         return "No Data"
     }
