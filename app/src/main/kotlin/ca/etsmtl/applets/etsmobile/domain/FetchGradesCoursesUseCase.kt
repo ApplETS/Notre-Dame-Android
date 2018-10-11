@@ -1,6 +1,7 @@
 package ca.etsmtl.applets.etsmobile.domain
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Transformations
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.presentation.App
@@ -8,6 +9,7 @@ import ca.etsmtl.applets.repository.data.model.Cours
 import ca.etsmtl.applets.repository.data.model.Resource
 import ca.etsmtl.applets.repository.data.model.SignetsUserCredentials
 import ca.etsmtl.applets.repository.data.repository.signets.CoursRepository
+import ca.etsmtl.applets.repository.data.repository.signets.EvaluationRepository
 import javax.inject.Inject
 
 /**
@@ -17,17 +19,49 @@ import javax.inject.Inject
 class FetchGradesCoursesUseCase @Inject constructor(
     private var userCredentials: SignetsUserCredentials,
     private val coursRepository: CoursRepository,
+    private val evaluationRepository: EvaluationRepository,
     private val app: App
 ) {
     fun getGradesCourses(): LiveData<Resource<Map<String, List<Cours>>>> {
-        return Transformations.map(coursRepository.getCours(userCredentials, true)) {
-            val map = it.groupBySession()
+        return Transformations.switchMap(coursRepository.getCours(userCredentials, true)) {
+            val mediatorLiveData = MediatorLiveData<Resource<List<Cours>>>()
+            val courses = it.data.orEmpty()
+            val coursesToFetchGradesFor = courses.filter {
+                it.hasValidSession() && it.cote.isNullOrEmpty() && it.noteSur100.isNullOrBlank()
+            }.toMutableList()
 
-            when {
-                it.status == Resource.Status.LOADING -> Resource.loading(map)
-                it.status == Resource.Status.SUCCESS && map != null -> Resource.success(map)
-                else -> Resource.error(it.message ?: "", map)
+            coursesToFetchGradesFor.forEach { cours ->
+                if (cours.cote.isNullOrBlank() && cours.noteSur100.isNullOrBlank()) {
+                    mediatorLiveData.addSource(evaluationRepository.getEvaluationsSummary(userCredentials, cours, true)) {
+                        if (it == null) {
+                            mediatorLiveData.value = Resource.error(app.getString(R.string.error), courses)
+                            coursesToFetchGradesFor.clear()
+                        } else {
+                            if (it.status == Resource.Status.LOADING) {
+                                Resource.loading(courses)
+                            } else {
+                                coursesToFetchGradesFor.remove(cours)
+
+                                if (coursesToFetchGradesFor.isEmpty()) {
+                                    mediatorLiveData.value = Resource.success(courses)
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
+            mediatorLiveData.groupBySession()
+        }
+    }
+
+    private fun LiveData<Resource<List<Cours>>>.groupBySession() = Transformations.map(this) {
+        val map = it.groupBySession()
+
+        when {
+            it.status == Resource.Status.LOADING -> Resource.loading(map)
+            it.status == Resource.Status.SUCCESS && map != null -> Resource.success(map)
+            else -> Resource.error(it.message ?: "", map)
         }
     }
 
