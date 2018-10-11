@@ -9,6 +9,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.domain.FetchGradesDetailsUseCase
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.etsmobile.util.Event
 import ca.etsmtl.applets.etsmobile.util.isDeviceConnected
@@ -18,7 +19,6 @@ import ca.etsmtl.applets.repository.data.model.Resource
 import ca.etsmtl.applets.repository.data.model.SignetsUserCredentials
 import ca.etsmtl.applets.repository.data.model.SommaireElementsEvaluation
 import ca.etsmtl.applets.repository.data.model.SommaireEtEvaluations
-import ca.etsmtl.applets.repository.data.repository.signets.EvaluationRepository
 import ca.etsmtl.applets.repository.util.zeroIfNullOrBlank
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.Group
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 class GradesDetailsViewModel @Inject constructor(
     private var userCredentials: SignetsUserCredentials,
-    private val repository: EvaluationRepository,
+    private val fetchGradesDetailsUseCase: FetchGradesDetailsUseCase,
     private val app: App
 ) : ViewModel(), LifecycleObserver {
     val cours = MutableLiveData<Cours>()
@@ -140,11 +140,7 @@ class GradesDetailsViewModel @Inject constructor(
 
     private fun load() {
         cours.value?.let {
-            summaryAndEvaluationsRes = repository.getSummaryAndEvaluations(
-                    userCredentials,
-                    it,
-                    true
-            ).apply {
+            summaryAndEvaluationsRes = fetchGradesDetailsUseCase.getSummaryAndEvaluations(it).apply {
                 summaryAndEvaluationsMediatorLiveData.addSource(this) {
                     summaryAndEvaluationsMediatorLiveData.value = it
                 }
