@@ -89,7 +89,7 @@ class GradesFragment : DaggerFragment() {
     }
 
     private fun subscribeUI() {
-        gradesViewModel.getCours().observe(this, Observer {
+        gradesViewModel.cours.observe(this, Observer {
             it?.takeIf { it.isNotEmpty() }?.let { adapter.items = it }
         })
 
