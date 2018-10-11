@@ -57,7 +57,7 @@ class CoursRepository @Inject constructor(
             }
 
             override fun createCall(): LiveData<ApiResponse<List<CoursEntity>>> {
-                return Transformations.switchMap(transformApiLiveData(api.listeCours(EtudiantRequestBody(userCredentials)))) {
+                return Transformations.switchMap(api.listeCours(EtudiantRequestBody(userCredentials))) {
 
                     val mediatorLiveData = MediatorLiveData<ApiResponse<List<CoursEntity>>>()
 
