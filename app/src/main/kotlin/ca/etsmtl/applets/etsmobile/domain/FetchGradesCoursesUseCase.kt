@@ -3,6 +3,7 @@ package ca.etsmtl.applets.etsmobile.domain
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Transformations
+import android.support.annotation.VisibleForTesting
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.repository.data.model.Cours
@@ -24,36 +25,52 @@ class FetchGradesCoursesUseCase @Inject constructor(
 ) {
     fun fetchGradesCourses(): LiveData<Resource<Map<String, List<Cours>>>> {
         return Transformations.switchMap(coursRepository.getCours(userCredentials, true)) {
-            val mediatorLiveData = MediatorLiveData<Resource<List<Cours>>>()
             val courses = it.data.orEmpty()
-            val coursesToFetchGradesFor = courses.filter {
-                it.hasValidSession() && it.cote.isNullOrEmpty() && it.noteSur100.isNullOrBlank()
-            }.toMutableList()
+            val mediatorLiveData = MediatorLiveData<Resource<List<Cours>>>()
 
-            coursesToFetchGradesFor.forEach { cours ->
-                if (cours.cote.isNullOrBlank() && cours.noteSur100.isNullOrBlank()) {
-                    mediatorLiveData.addSource(evaluationRepository.getEvaluationsSummary(userCredentials, cours, true)) {
-                        if (it == null) {
-                            mediatorLiveData.value = Resource.error(app.getString(R.string.error), courses)
-                            coursesToFetchGradesFor.clear()
-                        } else {
-                            if (it.status == Resource.Status.LOADING) {
-                                Resource.loading(courses)
+            if (it.status == Resource.Status.ERROR) {
+                mediatorLiveData.value = Resource.error(it.message ?: app.getString(R.string.error), courses)
+            } else if (it.status == Resource.Status.SUCCESS) {
+                val coursesToFetchGradesFor = courses.filterByCoursesToFetchGradesFor()
+
+                coursesToFetchGradesFor.forEach { cours ->
+                    if (cours.cote.isNullOrBlank() && cours.noteSur100.isNullOrBlank()) {
+                        mediatorLiveData.addSource(evaluationRepository.getEvaluationsSummary(userCredentials, cours, true)) {
+                            if (it == null) {
+                                mediatorLiveData.value = Resource.error(app.getString(R.string.error), courses)
+                                coursesToFetchGradesFor.clear()
                             } else {
-                                coursesToFetchGradesFor.remove(cours)
+                                if (it.status == Resource.Status.LOADING) {
+                                    Resource.loading(courses)
+                                } else {
+                                    coursesToFetchGradesFor.remove(cours)
 
-                                if (coursesToFetchGradesFor.isEmpty()) {
-                                    mediatorLiveData.value = Resource.success(courses)
+                                    if (coursesToFetchGradesFor.isEmpty()) {
+                                        mediatorLiveData.value = Resource.success(courses)
+                                    }
                                 }
                             }
                         }
                     }
                 }
+
+                if (coursesToFetchGradesFor.isEmpty()) {
+                    mediatorLiveData.value = Resource.success(courses)
+                } else {
+                    mediatorLiveData.value = Resource.loading(courses)
+                }
+            } else if (it.status == Resource.Status.LOADING) {
+                mediatorLiveData.value = Resource.loading(courses)
             }
 
             mediatorLiveData.groupBySession()
         }
     }
+
+    @VisibleForTesting
+    fun List<Cours>.filterByCoursesToFetchGradesFor() = filter {
+        it.hasValidSession() && it.cote.isNullOrEmpty() && it.noteSur100.isNullOrBlank()
+    }.toMutableList()
 
     private fun LiveData<Resource<List<Cours>>>.groupBySession() = Transformations.map(this) {
         val map = it.groupBySession()
@@ -61,11 +78,12 @@ class FetchGradesCoursesUseCase @Inject constructor(
         when {
             it.status == Resource.Status.LOADING -> Resource.loading(map)
             it.status == Resource.Status.SUCCESS && map != null -> Resource.success(map)
-            else -> Resource.error(it.message ?: "", map)
+            else -> Resource.error(it.message ?: app.getString(R.string.error), map)
         }
     }
 
-    private fun Resource<List<Cours>>.groupBySession() = data?.asReversed()?.groupBy {
+    @VisibleForTesting
+    fun Resource<List<Cours>>.groupBySession() = data?.asReversed()?.groupBy {
         it.run {
             when {
                 it.session.startsWith("A") -> it.session.replaceFirst("A", app.getString(R.string.session_fall) + " ")

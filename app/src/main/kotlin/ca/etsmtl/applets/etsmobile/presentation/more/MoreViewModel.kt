@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 
 class MoreViewModel @Inject constructor(
-        private val clearUserDataUseCase: ClearUserDataUseCase,
+    private val clearUserDataUseCase: ClearUserDataUseCase,
     private val app: App
 ) : AndroidViewModel(app) {
 

@@ -2,9 +2,9 @@ package ca.etsmtl.applets.etsmobile.presentation.login
 
 import android.app.Activity
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
@@ -27,10 +27,10 @@ import javax.inject.Inject
  */
 
 class LoginViewModel @Inject constructor(
-    private val app: App,
     private val fetchSavedSignetsUserCredentialsUserCase: FetchSavedSignetsUserCredentialsUserCase,
     private val checkUserCredentialsValidUseCase: CheckUserCredentialsValidUseCase,
-    private val saveSignetsUserCredentialsUseCase: SaveSignetsUserCredentialsUseCase
+    private val saveSignetsUserCredentialsUseCase: SaveSignetsUserCredentialsUseCase,
+    private val app: App
 ) : AndroidViewModel(app), LifecycleObserver {
 
     private val universalCode: MutableLiveData<String> by lazy { MutableLiveData<String>() }
