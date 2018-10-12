@@ -7,11 +7,11 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.domain.ClearUserDataUseCase
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.etsmobile.presentation.about.AboutActivity
 import ca.etsmtl.applets.etsmobile.presentation.login.WelcomeActivity
 import ca.etsmtl.applets.etsmobile.util.Event
-import ca.etsmtl.applets.repository.data.repository.signets.login.LoginRepository
 import javax.inject.Inject
 
 /**
@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 
 class MoreViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+        private val clearUserDataUseCase: ClearUserDataUseCase,
     private val app: App
 ) : AndroidViewModel(app) {
 
@@ -43,7 +43,7 @@ class MoreViewModel @Inject constructor(
      * This function should be called when the user want to log out.
      */
     private fun logout() {
-        with(loginRepository.clearUserData()) {
+        with(clearUserDataUseCase.clearUserData()) {
             logoutMediatorLiveData.addSource(this) { finished ->
                 finished?.let {
                     logoutMediatorLiveData.value = finished

@@ -7,18 +7,16 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import ca.etsmtl.applets.etsmobile.domain.FetchEtudiantUseCase
 import ca.etsmtl.applets.repository.data.model.Etudiant
 import ca.etsmtl.applets.repository.data.model.Resource
-import ca.etsmtl.applets.repository.data.model.SignetsUserCredentials
-import ca.etsmtl.applets.repository.data.repository.signets.InfoEtudiantRepository
 import javax.inject.Inject
 
 /**
  * Created by Sonphil on 15-03-18.
  */
 class ProfileViewModel @Inject constructor(
-    private val repository: InfoEtudiantRepository,
-    private var userCredentials: SignetsUserCredentials
+    private val fetchEtudiantUseCase: FetchEtudiantUseCase
 ) : ViewModel(), LifecycleObserver {
 
     private val etudiantMediatorLiveData: MediatorLiveData<Resource<Etudiant>> by lazy {
@@ -33,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun load() {
-        etudiantRes = repository.getInfoEtudiant(userCredentials) { true }.apply {
+        etudiantRes = fetchEtudiantUseCase.fetchEtudiant { true }.apply {
             etudiantMediatorLiveData.addSource<Resource<Etudiant>>(this) {
                 etudiantMediatorLiveData.value = it
             }
