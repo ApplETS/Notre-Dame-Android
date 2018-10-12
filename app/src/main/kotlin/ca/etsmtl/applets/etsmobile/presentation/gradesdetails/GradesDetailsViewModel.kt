@@ -16,7 +16,6 @@ import ca.etsmtl.applets.etsmobile.util.isDeviceConnected
 import ca.etsmtl.applets.repository.data.model.Cours
 import ca.etsmtl.applets.repository.data.model.Evaluation
 import ca.etsmtl.applets.repository.data.model.Resource
-import ca.etsmtl.applets.repository.data.model.SignetsUserCredentials
 import ca.etsmtl.applets.repository.data.model.SommaireElementsEvaluation
 import ca.etsmtl.applets.repository.data.model.SommaireEtEvaluations
 import ca.etsmtl.applets.repository.util.zeroIfNullOrBlank
@@ -30,7 +29,6 @@ import javax.inject.Inject
  */
 
 class GradesDetailsViewModel @Inject constructor(
-    private var userCredentials: SignetsUserCredentials,
     private val fetchGradesDetailsUseCase: FetchGradesDetailsUseCase,
     private val app: App
 ) : ViewModel(), LifecycleObserver {

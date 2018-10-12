@@ -24,52 +24,76 @@ class FetchGradesCoursesUseCase @Inject constructor(
     private val app: App
 ) {
     fun fetchGradesCourses(): LiveData<Resource<Map<String, List<Cours>>>> {
-        return Transformations.switchMap(coursRepository.getCours(userCredentials, true)) {
-            val courses = it.data.orEmpty()
+        return Transformations.switchMap(coursRepository.getCours(userCredentials, true)) { res ->
+            val courses = res.data.orEmpty()
+            /** LiveData returned to the caller **/
             val mediatorLiveData = MediatorLiveData<Resource<List<Cours>>>()
 
-            if (it.status == Resource.Status.ERROR) {
-                mediatorLiveData.value = Resource.error(it.message ?: app.getString(R.string.error), courses)
-            } else if (it.status == Resource.Status.SUCCESS) {
+            /**
+             * Fetch the grade for each [Cours] that needs it. This method should be called only if
+             * the courses have been successfully fetched beforehand.
+             */
+            fun fetchGrades() {
                 val coursesToFetchGradesFor = courses.filterByCoursesToFetchGradesFor()
 
                 coursesToFetchGradesFor.forEach { cours ->
-                    if (cours.cote.isNullOrBlank() && cours.noteSur100.isNullOrBlank()) {
-                        mediatorLiveData.addSource(evaluationRepository.getEvaluationsSummary(userCredentials, cours, true)) {
-                            if (it == null) {
-                                mediatorLiveData.value = Resource.error(app.getString(R.string.error), courses)
-                                coursesToFetchGradesFor.clear()
+                    mediatorLiveData.addSource(evaluationRepository.getEvaluationsSummary(
+                            userCredentials,
+                            cours,
+                            true
+                    )) {
+                        if (it == null) {
+                            mediatorLiveData.value = Resource.error(app.getString(R.string.error), courses)
+                            coursesToFetchGradesFor.clear()
+                        } else {
+                            if (it.status == Resource.Status.LOADING) {
+                                Resource.loading(courses)
                             } else {
-                                if (it.status == Resource.Status.LOADING) {
-                                    Resource.loading(courses)
-                                } else {
-                                    coursesToFetchGradesFor.remove(cours)
+                                coursesToFetchGradesFor.remove(cours)
 
-                                    if (coursesToFetchGradesFor.isEmpty()) {
-                                        mediatorLiveData.value = Resource.success(courses)
-                                    }
+                                if (coursesToFetchGradesFor.isEmpty()) {
+                                    mediatorLiveData.value = Resource.success(courses)
                                 }
                             }
                         }
                     }
                 }
 
-                if (coursesToFetchGradesFor.isEmpty()) {
-                    mediatorLiveData.value = Resource.success(courses)
-                } else {
-                    mediatorLiveData.value = Resource.loading(courses)
+                mediatorLiveData.value = when {
+                    // No course needs its grade to be fetched
+                    coursesToFetchGradesFor.isEmpty() -> Resource.success(courses)
+                    // At least one course needs its grade to be fetched
+                    else -> Resource.loading(courses)
                 }
-            } else if (it.status == Resource.Status.LOADING) {
-                mediatorLiveData.value = Resource.loading(courses)
             }
 
+            when (res.status) {
+                Resource.Status.ERROR ->
+                    // Return an error to the caller saying that an error occurred during the fetch
+                    mediatorLiveData.value = Resource.error(res.message ?: app.getString(R.string.error), courses)
+                Resource.Status.SUCCESS ->
+                    /*
+                    The courses have been successfully fetched. The grades of some courses must be
+                    fetched.
+                     */
+                    fetchGrades()
+                Resource.Status.LOADING -> mediatorLiveData.value = Resource.loading(courses)
+            }
+
+            /*
+             Group the courses by session because the UI would like to display the courses no matter
+             what
+              */
             mediatorLiveData.groupBySession()
         }
     }
 
+    /**
+     * Filters the courses that we need to fetch the grade for
+     */
     @VisibleForTesting
     fun List<Cours>.filterByCoursesToFetchGradesFor() = filter {
-        it.hasValidSession() && it.cote.isNullOrEmpty() && it.noteSur100.isNullOrBlank()
+        it.hasValidSession() && it.cote.isNullOrBlank() && it.noteSur100.isNullOrBlank()
     }.toMutableList()
 
     private fun LiveData<Resource<List<Cours>>>.groupBySession() = Transformations.map(this) {
@@ -82,6 +106,10 @@ class FetchGradesCoursesUseCase @Inject constructor(
         }
     }
 
+    /**
+     * Groups the [Cours] of this [Resource] by session by replacing the first letter with the full
+     * name
+     */
     @VisibleForTesting
     fun Resource<List<Cours>>.groupBySession() = data?.asReversed()?.groupBy {
         it.run {
