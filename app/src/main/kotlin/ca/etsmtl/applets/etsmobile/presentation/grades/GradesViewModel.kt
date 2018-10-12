@@ -60,7 +60,7 @@ class GradesViewModel @Inject constructor(
     }
 
     private fun load() {
-        coursLiveData = fetchGradesCoursesUseCase.getGradesCourses().apply {
+        coursLiveData = fetchGradesCoursesUseCase.fetchGradesCourses().apply {
             coursMediatorLiveData.addSource(this) {
                 coursMediatorLiveData.value = it
             }
