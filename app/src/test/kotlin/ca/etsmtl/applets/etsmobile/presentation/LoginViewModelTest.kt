@@ -82,7 +82,7 @@ class LoginViewModelTest {
         // Set an observer
         loginViewModel.showLoading.observeForever(mock())
         setAndSubmitCredentials(userCredentials)
-        verify(checkUserCredentialsValidUseCase.fetchAreUserCredentialsValid(capture(userCredentialsArgumentCaptor)))
+        verify(checkUserCredentialsValidUseCase).fetchAreUserCredentialsValid(capture(userCredentialsArgumentCaptor))
         assertEquals(userCredentials, userCredentialsArgumentCaptor.value)
     }
 
@@ -100,7 +100,7 @@ class LoginViewModelTest {
 
         loginViewModel.setPassword(userCredentials.motPasse)
         loginViewModel.submitCredentials()
-        verify(checkUserCredentialsValidUseCase.fetchAreUserCredentialsValid(capture(userCredentialsArgumentCaptor)))
+        verify(checkUserCredentialsValidUseCase).fetchAreUserCredentialsValid(capture(userCredentialsArgumentCaptor))
         assertEquals(userCredentials, userCredentialsArgumentCaptor.value)
     }
 
@@ -246,7 +246,7 @@ class LoginViewModelTest {
         liveData.value = Resource.success(true)
         verifyZeroInteractions(observer)
 
-        liveData.value = Resource.error("foo", null)
+        liveData.value = Resource.error("foo", false)
         verify(observer).onChanged(null)
     }
 

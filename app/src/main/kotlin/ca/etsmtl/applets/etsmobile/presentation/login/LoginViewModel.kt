@@ -148,20 +148,6 @@ class LoginViewModel @Inject constructor(
     val displayUniversalCodeDialog: LiveData<Boolean> = displayUniversalCodeDialogMediator
 
     /**
-     * Verifies that a given resource is not null and that his status is [Resource.SUCCESS]
-     *
-     * @param blnResource The [Resource] to verify
-     * @return true if the resource is not null and that his status is [Resource.SUCCESS]
-     */
-    private fun userCredentialsValid(blnResource: Resource<Boolean>?): Boolean {
-        if (blnResource != null && blnResource.status == Resource.Status.SUCCESS) {
-            return blnResource.data!!
-        }
-
-        return false
-    }
-
-    /**
      * Set the user's universal code
      *
      * This will trigger a validity check for the given universal code.
