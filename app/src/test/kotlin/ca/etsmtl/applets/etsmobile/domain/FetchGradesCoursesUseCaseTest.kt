@@ -66,7 +66,7 @@ class FetchGradesCoursesUseCaseTest {
         `when`(coursRepository.getCours(userCredentials)).thenReturn(liveData)
 
         val observer: Observer<Resource<Map<String, List<Cours>>>> = mock()
-        fetchGradesCoursesUseCase.fetchGradesCourses().observeForever(observer)
+        fetchGradesCoursesUseCase().observeForever(observer)
         verify(coursRepository).getCours(userCredentials)
         verify(observer).onChanged(capture(resArgumentCaptor))
         assertEquals(Resource.Status.LOADING, resArgumentCaptor.value.status)
@@ -202,7 +202,7 @@ class FetchGradesCoursesUseCaseTest {
         `when`(evaluationRepository.getEvaluationsSummary(userCredentials, coursWithMissingRatingAndGrade)).thenReturn(summaryLiveData)
 
         val observer: Observer<Resource<Map<String, List<Cours>>>> = mock()
-        fetchGradesCoursesUseCase.fetchGradesCourses().observeForever(observer)
+        fetchGradesCoursesUseCase().observeForever(observer)
 
         coursesLiveData.postValue(Resource.success(mutableListOf<Cours>().apply {
             add(cours1)

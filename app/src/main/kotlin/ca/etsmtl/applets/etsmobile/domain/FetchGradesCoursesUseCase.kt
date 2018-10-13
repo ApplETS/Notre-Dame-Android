@@ -23,7 +23,7 @@ class FetchGradesCoursesUseCase @Inject constructor(
     private val evaluationRepository: EvaluationRepository,
     private val app: App
 ) {
-    fun fetchGradesCourses(): LiveData<Resource<Map<String, List<Cours>>>> {
+    operator fun invoke(): LiveData<Resource<Map<String, List<Cours>>>> {
         return Transformations.switchMap(coursRepository.getCours(userCredentials, true)) { res ->
             val courses = res.data.orEmpty()
             /** LiveData returned to the caller **/

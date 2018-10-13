@@ -42,7 +42,7 @@ class MoreViewModel @Inject constructor(
      * This function should be called when the user want to log out.
      */
     private fun logout() {
-        with(clearUserDataUseCase.clearUserData()) {
+        with(clearUserDataUseCase()) {
             logoutMediatorLiveData.addSource(this) { finished ->
                 finished?.let {
                     logoutMediatorLiveData.value = finished

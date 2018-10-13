@@ -73,9 +73,9 @@ class LoginViewModel @Inject constructor(
      */
     private val userCredentialsValid: LiveData<Resource<Boolean>> by lazy {
         Transformations.switchMap(userCredentials) { userCredentials ->
-            Transformations.map(checkUserCredentialsValidUseCase.fetchAreUserCredentialsValid(userCredentials)) {
+            Transformations.map(checkUserCredentialsValidUseCase(userCredentials)) {
                 if (it.status != Resource.Status.LOADING && it.data == true) {
-                    saveSignetsUserCredentialsUseCase.saveSignetsUserCredentials(userCredentials)
+                    saveSignetsUserCredentialsUseCase(userCredentials)
                     _activityToGoTo.value = MainActivity::class.java
                 }
 
@@ -188,7 +188,7 @@ class LoginViewModel @Inject constructor(
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun submitSavedCredentials() {
-        with(fetchSavedSignetsUserCredentialsUserCase.fetchSavedUserCredentials()) {
+        with(fetchSavedSignetsUserCredentialsUserCase()) {
             if (this == null) {
                 showLoginFragmentMediator.call()
             } else {

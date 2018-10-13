@@ -15,7 +15,7 @@ class CheckUserCredentialsValidUseCase @Inject constructor(
     private val repository: InfoEtudiantRepository,
     private val app: App
 ) {
-    fun fetchAreUserCredentialsValid(userCredentials: SignetsUserCredentials): LiveData<Resource<Boolean>> {
+    operator fun invoke(userCredentials: SignetsUserCredentials): LiveData<Resource<Boolean>> {
         val shouldFetch: (data: Etudiant?) -> Boolean = { it == null }
 
         return Transformations.map(repository.getInfoEtudiant(userCredentials, shouldFetch)) { res ->

@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun load() {
-        etudiantRes = fetchEtudiantUseCase.fetchEtudiant { true }.apply {
+        etudiantRes = fetchEtudiantUseCase { true }.apply {
             etudiantMediatorLiveData.addSource<Resource<Etudiant>>(this) {
                 etudiantMediatorLiveData.value = it
             }

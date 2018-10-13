@@ -52,7 +52,7 @@ class GradesViewModelTest {
     fun testLoading() {
         val liveData = MutableLiveData<Resource<Map<String, List<Cours>>>>()
         liveData.value = Resource.loading(null)
-        `when`(fetchGradesCoursesUseCase.fetchGradesCourses()).thenReturn(liveData)
+        `when`(fetchGradesCoursesUseCase()).thenReturn(liveData)
 
         gradesViewModel.refresh()
 
@@ -67,7 +67,7 @@ class GradesViewModelTest {
     @Test
     fun testMessage() {
         val liveData = MutableLiveData<Resource<Map<String, List<Cours>>>>()
-        `when`(fetchGradesCoursesUseCase.fetchGradesCourses()).thenReturn(liveData)
+        `when`(fetchGradesCoursesUseCase()).thenReturn(liveData)
 
         gradesViewModel.refresh()
 
@@ -90,7 +90,7 @@ class GradesViewModelTest {
     @Test
     fun testShowEmptyView() {
         val liveData = MutableLiveData<Resource<Map<String, List<Cours>>>>()
-        `when`(fetchGradesCoursesUseCase.fetchGradesCourses()).thenReturn(liveData)
+        `when`(fetchGradesCoursesUseCase()).thenReturn(liveData)
 
         gradesViewModel.refresh()
 

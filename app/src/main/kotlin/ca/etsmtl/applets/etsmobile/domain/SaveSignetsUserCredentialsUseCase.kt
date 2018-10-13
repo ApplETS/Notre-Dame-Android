@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SaveSignetsUserCredentialsUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    fun saveSignetsUserCredentials(signetsUserCredentials: SignetsUserCredentials) {
+    operator fun invoke(signetsUserCredentials: SignetsUserCredentials) {
         loginRepository.saveUserCredentialsIfNeeded(signetsUserCredentials)
     }
 }

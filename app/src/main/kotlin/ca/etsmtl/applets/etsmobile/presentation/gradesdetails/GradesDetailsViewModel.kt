@@ -138,7 +138,7 @@ class GradesDetailsViewModel @Inject constructor(
 
     private fun load() {
         cours.value?.let {
-            summaryAndEvaluationsRes = fetchGradesDetailsUseCase.fetchSummaryAndEvaluations(it).apply {
+            summaryAndEvaluationsRes = fetchGradesDetailsUseCase(it).apply {
                 summaryAndEvaluationsMediatorLiveData.addSource(this) {
                     summaryAndEvaluationsMediatorLiveData.value = it
                 }

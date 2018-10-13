@@ -6,5 +6,5 @@ import javax.inject.Inject
 class FetchSavedSignetsUserCredentialsUserCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    fun fetchSavedUserCredentials() = loginRepository.getSavedUserCredentials()
+    operator fun invoke() = loginRepository.getSavedUserCredentials()
 }

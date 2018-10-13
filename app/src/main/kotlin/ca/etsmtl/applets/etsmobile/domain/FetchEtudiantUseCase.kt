@@ -11,7 +11,7 @@ class FetchEtudiantUseCase @Inject constructor(
     private val userCredentials: SignetsUserCredentials,
     private val etudiantRepository: InfoEtudiantRepository
 ) {
-    fun fetchEtudiant(shouldFetch: (data: Etudiant?) -> Boolean): LiveData<Resource<Etudiant>> {
+    operator fun invoke(shouldFetch: (data: Etudiant?) -> Boolean): LiveData<Resource<Etudiant>> {
         return etudiantRepository.getInfoEtudiant(userCredentials, shouldFetch)
     }
 }

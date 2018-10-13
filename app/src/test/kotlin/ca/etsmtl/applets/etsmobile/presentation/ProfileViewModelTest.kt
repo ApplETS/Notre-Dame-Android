@@ -32,17 +32,17 @@ class ProfileViewModelTest {
     @Test
     fun testCallUseCase() {
         val foo = MutableLiveData<Resource<Etudiant>>()
-        `when`(fetchEtudiantUseCase.fetchEtudiant( any())).thenReturn(foo)
+        `when`(fetchEtudiantUseCase(any())).thenReturn(foo)
 
         profileViewModel.refresh()
 
-        verify(fetchEtudiantUseCase).fetchEtudiant(any())
+        verify(fetchEtudiantUseCase).invoke(any())
     }
 
     @Test
     fun testSendResultToUI() {
         val foo = MutableLiveData<Resource<Etudiant>>()
-        `when`(fetchEtudiantUseCase.fetchEtudiant( any())).thenReturn(foo)
+        `when`(fetchEtudiantUseCase(any())).thenReturn(foo)
 
         val etudiantObserver = mock<Observer<Etudiant>>()
         verify(etudiantObserver, Mockito.never()).onChanged(ArgumentMatchers.any())

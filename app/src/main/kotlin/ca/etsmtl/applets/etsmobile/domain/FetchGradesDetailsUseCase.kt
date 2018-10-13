@@ -18,7 +18,7 @@ class FetchGradesDetailsUseCase @Inject constructor(
     private val repository: EvaluationRepository,
     private val app: App
 ) {
-    fun fetchSummaryAndEvaluations(cours: Cours): LiveData<Resource<SommaireEtEvaluations>> = repository.getSummaryAndEvaluations(
+    operator fun invoke(cours: Cours): LiveData<Resource<SommaireEtEvaluations>> = repository.getSummaryAndEvaluations(
             userCredentials,
             cours,
             true

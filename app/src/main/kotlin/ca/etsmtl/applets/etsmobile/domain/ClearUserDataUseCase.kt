@@ -8,5 +8,5 @@ import javax.inject.Inject
  */
 
 class ClearUserDataUseCase @Inject constructor(private val loginRepository: LoginRepository) {
-    fun clearUserData() = loginRepository.clearUserData()
+    operator fun invoke() = loginRepository.clearUserData()
 }
