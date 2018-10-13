@@ -19,17 +19,17 @@ class SessionDaoTest : DbTest() {
     private val entity = SessionEntity(
             "É2018",
             "Été 2018",
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD"),
-            "2018-04-30".dateToUnix("YYYY-MM-DD")
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd"),
+            "2018-04-30".dateToUnix("yyyy-MM-dd")
     )
     private lateinit var dao: SessionDao
 
@@ -51,17 +51,17 @@ class SessionDaoTest : DbTest() {
         val same = SessionEntity(
                 "É2018",
                 "Été 2018",
-                "2018-03-23".dateToUnix("YYYY-MM-DD"),
-                "2019-04-30".dateToUnix("YYYY-MM-DD"),
-                "2019-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD"),
-                "2018-04-30".dateToUnix("YYYY-MM-DD")
+                "2018-03-23".dateToUnix("yyyy-MM-dd"),
+                "2019-04-30".dateToUnix("yyyy-MM-dd"),
+                "2019-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd"),
+                "2018-04-30".dateToUnix("yyyy-MM-dd")
         )
         dao.insert(same)
         val fromDb = LiveDataTestUtil.getValue(dao.getAll())
