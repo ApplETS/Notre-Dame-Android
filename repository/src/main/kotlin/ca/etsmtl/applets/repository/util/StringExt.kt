@@ -56,3 +56,10 @@ fun String.toLocaleDate(): String {
  * Formats Microsoft JSON date (e.g. /Date(1525093200000)/) to Unix time (e.g. 1525093200000)
  */
 fun String.msDateToUnix() = substringAfter('(').substringBefore(')').toLong()
+
+/**
+ * Convert date [String] to Unix time
+ *
+ * @param format The current format of the date (e.g. dd-MM-yyyy)
+ */
+fun String.dateToUnix(format: String) = SimpleDateFormat(format).parse(this).time / 1000
