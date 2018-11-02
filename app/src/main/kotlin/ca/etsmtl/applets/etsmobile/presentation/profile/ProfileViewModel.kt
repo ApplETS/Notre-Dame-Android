@@ -91,7 +91,7 @@ class ProfileViewModel @Inject constructor(
             add(
                     Section().apply {
                         setHeader(ProfileHeaderItem(it.libelle))
-                        add(ProfileItem(app.getString(R.string.label_permanent_code_profile), it.code))
+                        add(ProfileItem(app.getString(R.string.label_code_program_profile), it.code))
                         add(ProfileItem(app.getString(R.string.label_average_program_profile), it.moyenne))
                         add(ProfileItem(app.getString(R.string.label_number_accumulated_credits_program_profile), it.nbCrsReussis.toString()))
                         add(ProfileItem(app.getString(R.string.label_number_registered_credits_program_profile), it.nbCreditsInscrits.toString()))
