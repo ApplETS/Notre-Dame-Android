@@ -10,9 +10,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.domain.FetchEtudiantUseCase
+import ca.etsmtl.applets.etsmobile.domain.FetchProgrammesUseCase
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.repository.data.model.Etudiant
+import ca.etsmtl.applets.repository.data.model.Programme
 import ca.etsmtl.applets.repository.data.model.Resource
+import ca.etsmtl.applets.repository.util.zipResourceTo
 import com.xwray.groupie.Section
 import javax.inject.Inject
 
@@ -21,6 +24,7 @@ import javax.inject.Inject
  */
 class ProfileViewModel @Inject constructor(
     private val fetchEtudiantUseCase: FetchEtudiantUseCase,
+    private val fetchProgrammesUseCase: FetchProgrammesUseCase,
     private val app: App
 ) : ViewModel(), LifecycleObserver {
 
@@ -35,34 +39,21 @@ class ProfileViewModel @Inject constructor(
     val errorMessage: LiveData<String> = Transformations.map(profileMediatorLiveData) {
         it.message
     }
-    private var etudiantRes: LiveData<Resource<Etudiant>>? = null
+    private var etudiantProgrammesPair: LiveData<Resource<Pair<Etudiant?, List<Programme>?>>>? = null
 
     private fun load() {
-        etudiantRes = fetchEtudiantUseCase { true }.apply {
-            profileMediatorLiveData.addSource<Resource<Etudiant>>(this) { res ->
-                val sections = mutableListOf<Section>()
-                val etudiant = res.data
-
+        etudiantProgrammesPair = (fetchEtudiantUseCase { true } zipResourceTo fetchProgrammesUseCase()).apply {
+            profileMediatorLiveData.addSource(this) { res ->
                 _loading.value = res.status == Resource.Status.LOADING
 
-                if (res.status != Resource.Status.LOADING) {
-                    etudiant?.let {
-                        sections.add(
-                                Section().apply {
-                                    setHeader(ProfileHeaderItem(app.getString(R.string.title_student_status_profile)))
-                                    add(ProfileItem(app.getString(R.string.label_balance_profile), it.soldeTotal))
-                                }
-                        )
+                val sections = mutableListOf<Section>()
 
-                        sections.add(
-                                Section().apply {
-                                    setHeader(ProfileHeaderItem(app.getString(R.string.title_personal_information_profile)))
-                                    add(ProfileItem(app.getString(R.string.label_first_name_profile), it.prenom))
-                                    add(ProfileItem(app.getString(R.string.label_last_name_profile), it.nom))
-                                    add(ProfileItem(app.getString(R.string.label_permanent_code_profile), it.codePerm))
-                                }
-                        )
-                    }
+                if (res.status != Resource.Status.LOADING) {
+                    val etudiant = res.data?.first
+                    val programmes = res.data?.second
+
+                    etudiant?.let { it.toSections().forEach { sections.add(it) } }
+                    programmes?.let { it.toSections().forEach { sections.add(it) } }
 
                     profileMediatorLiveData.value = res.copyStatusAndMessage(sections)
                 }
@@ -72,8 +63,44 @@ class ProfileViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun refresh() {
-        etudiantRes?.let { profileMediatorLiveData.removeSource(it) }
-        etudiantRes = null
+        etudiantProgrammesPair?.let { profileMediatorLiveData.removeSource(it) }
+        etudiantProgrammesPair = null
         load()
+    }
+
+    private fun Etudiant.toSections() = mutableListOf<Section>().apply {
+        add(
+                Section().apply {
+                    setHeader(ProfileHeaderItem(app.getString(R.string.title_student_status_profile)))
+                    add(ProfileItem(app.getString(R.string.label_balance_profile), soldeTotal))
+                }
+        )
+
+        add(
+                Section().apply {
+                    setHeader(ProfileHeaderItem(app.getString(R.string.title_personal_information_profile)))
+                    add(ProfileItem(app.getString(R.string.label_first_name_profile), prenom))
+                    add(ProfileItem(app.getString(R.string.label_last_name_profile), nom))
+                    add(ProfileItem(app.getString(R.string.label_permanent_code_profile), codePerm))
+                }
+        )
+    }
+
+    private fun List<Programme>.toSections() = mutableListOf<Section>().apply {
+        this@toSections.reversed().forEach {
+            add(
+                    Section().apply {
+                        setHeader(ProfileHeaderItem(it.libelle))
+                        add(ProfileItem(app.getString(R.string.label_permanent_code_profile), it.code))
+                        add(ProfileItem(app.getString(R.string.label_average_program_profile), it.moyenne))
+                        add(ProfileItem(app.getString(R.string.label_number_accumulated_credits_program_profile), it.nbCrsReussis.toString()))
+                        add(ProfileItem(app.getString(R.string.label_number_registered_credits_program_profile), it.nbCreditsInscrits.toString()))
+                        add(ProfileItem(app.getString(R.string.label_number_completed_courses_program_profile), it.nbCreditsCompletes.toString()))
+                        add(ProfileItem(app.getString(R.string.label_number_failed_courses_program_profile), it.nbCrsEchoues.toString()))
+                        add(ProfileItem(app.getString(R.string.label_number_equivalent_courses_program_profile), it.nbEquivalences.toString()))
+                        add(ProfileItem(app.getString(R.string.label_status_program_profile), it.statut))
+                    }
+            )
+        }
     }
 }

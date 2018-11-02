@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.domain.FetchEtudiantUseCase
+import ca.etsmtl.applets.etsmobile.domain.FetchProgrammesUseCase
 import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileHeaderItem
 import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileItem
 import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileViewModel
@@ -39,7 +40,8 @@ class ProfileViewModelTest {
 
     private val app: App = mock()
     private val fetchEtudiantUseCase: FetchEtudiantUseCase = mock(FetchEtudiantUseCase::class.java)
-    private val profileViewModel = ProfileViewModel(fetchEtudiantUseCase, app)
+    private val fetchProgrammesUseCase: FetchProgrammesUseCase = mock(FetchProgrammesUseCase::class.java)
+    private val profileViewModel = ProfileViewModel(fetchEtudiantUseCase, fetchProgrammesUseCase, app)
     @Captor
     private lateinit var sectionsArgumentCaptor: ArgumentCaptor<List<Section>>
 
