@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.util.EventObserver
+import ca.etsmtl.applets.etsmobile.util.toast
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_profile.recyclerViewProfile
 import kotlinx.android.synthetic.main.fragment_profile.swipeRefreshLayoutProfile
@@ -55,11 +57,14 @@ class ProfileFragment : DaggerFragment() {
     }
 
     private fun subscribeUI() {
-        profileViewModel.profile.observe(this, Observer<List<ProfileItem<out ProfileAdapter.ProfileViewHolder>>> {
+        profileViewModel.profile.observe(this, Observer {
             it?.let { adapter.items = it }
         })
         profileViewModel.loading.observe(this, Observer<Boolean> {
             it?.let { swipeRefreshLayoutProfile.isRefreshing = it }
+        })
+        profileViewModel.errorMessage.observe(this, EventObserver { errorMessage ->
+            errorMessage?.let { it -> context?.toast(it) }
         })
         this.lifecycle.addObserver(profileViewModel)
     }
