@@ -7,7 +7,7 @@ import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.domain.FetchEtudiantUseCase
 import ca.etsmtl.applets.etsmobile.domain.FetchProgrammesUseCase
 import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileHeaderItem
-import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileItem
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileValueItem
 import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileViewModel
 import ca.etsmtl.applets.repository.data.model.Etudiant
 import ca.etsmtl.applets.repository.data.model.Resource
@@ -99,7 +99,7 @@ class ProfileViewModelTest {
         val expectedSections = mutableListOf<Section>()
 
         val expectedSection0Header = ProfileHeaderItem("fooItem1")
-        val expectedSection0Item0 = ProfileItem("fooItem2", fooEtudiant.soldeTotal)
+        val expectedSection0Item0 = ProfileValueItem("fooItem2", fooEtudiant.soldeTotal)
         expectedSections.add(
                 Section().apply {
                     setHeader(expectedSection0Header)
@@ -108,9 +108,9 @@ class ProfileViewModelTest {
         )
 
         val expectedSection1Header = ProfileHeaderItem("fooItem3")
-        val expectedSection1Item0 = ProfileItem("fooItem4", fooEtudiant.prenom)
-        val expectedSection1Item1 = ProfileItem("fooItem5", fooEtudiant.nom)
-        val expectedSection1Item2 = ProfileItem("fooItem6", fooEtudiant.codePerm)
+        val expectedSection1Item0 = ProfileValueItem("fooItem4", fooEtudiant.prenom)
+        val expectedSection1Item1 = ProfileValueItem("fooItem5", fooEtudiant.nom)
+        val expectedSection1Item2 = ProfileValueItem("fooItem6", fooEtudiant.codePerm)
         expectedSections.add(
                 Section().apply {
                     setHeader(expectedSection1Header)
