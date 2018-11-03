@@ -6,7 +6,11 @@ import androidx.lifecycle.Observer
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.domain.FetchEtudiantUseCase
 import ca.etsmtl.applets.etsmobile.domain.FetchProgrammesUseCase
-import ca.etsmtl.applets.etsmobile.presentation.profile.*
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileAdapter
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileHeaderItem
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileItem
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileValueItem
+import ca.etsmtl.applets.etsmobile.presentation.profile.ProfileViewModel
 import ca.etsmtl.applets.etsmobile.util.Event
 import ca.etsmtl.applets.etsmobile.util.EventObserver
 import ca.etsmtl.applets.etsmobile.util.mockNetwork
@@ -19,8 +23,14 @@ import com.nhaarman.mockito_kotlin.mock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.*
-import org.mockito.Mockito.*
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 import kotlin.test.assertEquals
 
 /**
