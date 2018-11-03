@@ -16,4 +16,20 @@ class ProfileHeaderItem(val title: String) : ProfileItem<ProfileAdapter.ProfileV
         viewHolder.tvTitleProfile.text = title
         viewHolder.dividerProfile.show(position != 0)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        if (other == null || javaClass != other.javaClass) {
+            return false
+        }
+
+        return title == (other as ProfileHeaderItem).title
+    }
+
+    override fun hashCode(): Int {
+        return title.hashCode()
+    }
 }

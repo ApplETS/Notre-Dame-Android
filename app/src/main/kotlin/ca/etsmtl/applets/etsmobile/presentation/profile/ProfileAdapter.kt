@@ -3,7 +3,6 @@ package ca.etsmtl.applets.etsmobile.presentation.profile
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ca.etsmtl.applets.etsmobile.R
@@ -14,25 +13,31 @@ import kotlinx.android.extensions.LayoutContainer
  */
 
 class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder>() {
-    private val differ = AsyncListDiffer<ProfileItem<out ProfileViewHolder>>(this, object : DiffUtil.ItemCallback<ProfileItem<out ProfileViewHolder>>() {
-        override fun areItemsTheSame(oldItem: ProfileItem<out ProfileViewHolder>, newItem: ProfileItem<out ProfileViewHolder>): Boolean {
-            return when {
-                oldItem is ProfileValueItem && newItem is ProfileValueItem ->
-                    oldItem.label == newItem.label && oldItem.label == newItem.label
-                oldItem is ProfileHeaderItem && newItem is ProfileHeaderItem ->
-                    oldItem.title == newItem.title
-                else -> false
-            }
-        }
-
-        override fun areContentsTheSame(oldItem: ProfileItem<out ProfileViewHolder>, newItem: ProfileItem<out ProfileViewHolder>): Boolean = oldItem == newItem
-    })
-
     var items: List<ProfileItem<out ProfileViewHolder>> = emptyList()
         set(value) {
-            field = value
+            val diffCallback = object : DiffUtil.Callback() {
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    val oldItem = field[oldItemPosition]
+                    val newItem = value[newItemPosition]
 
-            differ.submitList(value)
+                    return oldItem == newItem
+                }
+
+                override fun getOldListSize() = field.count()
+
+                override fun getNewListSize() = value.count()
+
+                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    val oldItem = field[oldItemPosition]
+                    val newItem = value[newItemPosition]
+
+                    return oldItem == newItem
+                }
+            }
+
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            field = value
+            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
@@ -46,23 +51,23 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.ProfileViewHolder>() 
         }
     }
 
-    override fun getItemCount() = differ.currentList.count()
+    override fun getItemCount() = items.count()
 
     override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
-        val item = differ.currentList[position]
+        val item = items[position]
 
         if (item is ProfileValueItem) {
-            item.bind(holder as ProfileViewHolder.ItemViewHolder,  position)
+            item.bind(holder as ProfileViewHolder.ItemViewHolder, position)
         } else if (item is ProfileHeaderItem) {
-            item.bind(holder as ProfileViewHolder.HeaderViewHolder,  position)
+            item.bind(holder as ProfileViewHolder.HeaderViewHolder, position)
         }
     }
 
     override fun getItemViewType(position: Int) = items[position].getLayout()
 
-    sealed class ProfileViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer {
-        class ItemViewHolder(override val containerView: View): ProfileViewHolder(containerView)
+    sealed class ProfileViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        class ItemViewHolder(override val containerView: View) : ProfileViewHolder(containerView)
 
-        class HeaderViewHolder(override val containerView: View): ProfileViewHolder(containerView)
+        class HeaderViewHolder(override val containerView: View) : ProfileViewHolder(containerView)
     }
 }

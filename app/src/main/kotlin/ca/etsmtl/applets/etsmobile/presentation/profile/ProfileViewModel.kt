@@ -49,13 +49,12 @@ class ProfileViewModel @Inject constructor(
                 val etudiant = res.data?.first
                 val programmes = res.data?.second
 
-
-                if (profileMediatorLiveData.value?.data.isNullOrEmpty() || res.status != Resource.Status.LOADING) {
-                    etudiant?.let { it.addToSections(sections) }
-                    programmes?.let { it.asReversed().forEach { it.addToSections(sections) } }
-
-                    profileMediatorLiveData.value = res.copyStatusAndMessage(sections)
+                if (etudiant != null && programmes != null) {
+                    etudiant.addToSections(sections)
+                    programmes.asReversed().forEach { it.addToSections(sections) }
                 }
+
+                profileMediatorLiveData.value = res.copyStatusAndMessage(sections)
             }
         }
     }
