@@ -8,7 +8,7 @@ import ca.etsmtl.applets.repository.data.model.Resource
  * Created by Sonphil on 01-11-18.
  */
 
-fun <A, B> MediatorLiveData<Pair<A?, B?>>.zip(a: LiveData<A>, b: LiveData<B>) {
+internal fun <A, B> MediatorLiveData<Pair<A?, B?>>.zip(a: LiveData<A>, b: LiveData<B>) {
     var lastA: A? = null
     var lastB: B? = null
 
@@ -23,9 +23,11 @@ fun <A, B> MediatorLiveData<Pair<A?, B?>>.zip(a: LiveData<A>, b: LiveData<B>) {
     }
 }
 
-fun <A, B> MediatorLiveData<Resource<Pair<A?, B?>>>.zipResource(a: LiveData<Resource<A>>, b: LiveData<Resource<B>>) {
+internal fun <A, B> MediatorLiveData<Resource<Pair<A?, B?>>>.zipResource(a: LiveData<Resource<A>>, b: LiveData<Resource<B>>) {
     var lastA: Resource<A>? = null
     var lastB: Resource<B>? = null
+
+    value = Resource.loading(null)
 
     fun updateValue() {
         val pair = Pair(lastA?.data, lastB?.data)

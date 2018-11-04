@@ -86,10 +86,12 @@ class ProfileViewModelTest {
     fun testSendResultToUI() {
         profileViewModel.refresh()
 
+        verify(loadingObserver).onChanged(true)
+
         var fooRes: Resource<Etudiant> = Resource.loading(null)
         etudiantLiveData.value = fooRes
-        verify(profileObserver).onChanged(emptyList())
-        verify(loadingObserver).onChanged(true)
+        verify(profileObserver, times(2)).onChanged(emptyList())
+        verify(loadingObserver, times(2)).onChanged(true)
 
         reset(profileObserver)
         reset(loadingObserver)
@@ -127,7 +129,7 @@ class ProfileViewModelTest {
         assertEquals(expectedSection1Item1, sectionsArgumentCaptor.value[4])
         assertEquals(expectedSection1Item2, sectionsArgumentCaptor.value[5])
         verify(loadingObserver).onChanged(false)
-        verify(errorMsgObserver, times(3)).onChanged(capture(stringEventArgumentCaptor))
+        verify(errorMsgObserver, times(4)).onChanged(capture(stringEventArgumentCaptor))
         assertEquals(null, stringEventArgumentCaptor.value.peekContent())
     }
 
@@ -141,11 +143,11 @@ class ProfileViewModelTest {
         `when`(app.getString(R.string.error)).thenReturn(expectedError)
         val errorMsg = "Test error"
         etudiantLiveData.value = Resource.error(errorMsg, null)
-        verify(errorMsgObserver).onChanged(capture(stringEventArgumentCaptor))
+        verify(errorMsgObserver, times(2)).onChanged(capture(stringEventArgumentCaptor))
         assertEquals(null, stringEventArgumentCaptor.value.peekContent())
 
         programmesLiveData.value = Resource.error(errorMsg, null)
-        verify(errorMsgObserver, times(2)).onChanged(capture(stringEventArgumentCaptor))
+        verify(errorMsgObserver, times(3)).onChanged(capture(stringEventArgumentCaptor))
         assertEquals(errorMsg, stringEventArgumentCaptor.value.peekContent())
     }
 }
