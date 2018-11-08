@@ -9,6 +9,7 @@ import ca.etsmtl.applets.etsmobile.presentation.main.MainActivity
 import ca.etsmtl.applets.etsmobile.util.show
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.tabLayout
 import kotlinx.android.synthetic.main.fragment_student.viewPagerStudent
 
 /**
@@ -32,11 +33,11 @@ class StudentFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context?.let {
-            viewPagerStudent.adapter = StudentPagerAdapter(it, childFragmentManager)
-            (activity as? MainActivity)?.getTabLayout()?.let {
-                it.setupWithViewPager(viewPagerStudent)
+        context?.let { context ->
+            (activity as? MainActivity)?.tabLayout?.let {
                 it.show(true)
+                viewPagerStudent.adapter = StudentPagerAdapter(context, childFragmentManager)
+                it.setupWithViewPager(viewPagerStudent)
             }
         }
     }
@@ -44,10 +45,7 @@ class StudentFragment : DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        (activity as? MainActivity)?.getTabLayout()?.let {
-            it.removeAllTabs()
-            it.show(false)
-        }
+        (activity as? MainActivity)?.tabLayout?.show(false)
     }
 
     companion object {

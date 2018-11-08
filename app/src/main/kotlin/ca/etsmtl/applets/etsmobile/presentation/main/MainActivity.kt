@@ -8,10 +8,8 @@ import androidx.navigation.ui.setupWithNavController
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.presentation.BaseActivity
 import ca.etsmtl.applets.etsmobile.util.show
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.appBarLayout
 import kotlinx.android.synthetic.main.activity_main.navigation
-import kotlinx.android.synthetic.main.activity_main.tabs
 import kotlinx.android.synthetic.main.activity_main.toolbar
 
 /**
@@ -48,8 +46,6 @@ class MainActivity : BaseActivity() {
         ))
         toolbar.setupWithNavController(navController, appBarConfiguration)
     }
-
-    fun getTabLayout(): TabLayout = tabs
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.fragmentNavHostMain).navigateUp()
