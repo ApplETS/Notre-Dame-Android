@@ -2,17 +2,20 @@ package ca.etsmtl.applets.etsmobile.presentation.ets
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import com.google.android.material.appbar.AppBarLayout
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.presentation.main.MainActivity
+import ca.etsmtl.applets.etsmobile.util.show
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.activity_main.appBarLayout
 import kotlinx.android.synthetic.main.fragment_ets.appBarLayoutEts
 import kotlinx.android.synthetic.main.fragment_ets.iVETSLogo
 import kotlinx.android.synthetic.main.fragment_ets.ivEtsAppBar
@@ -36,6 +39,8 @@ class EtsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).appBarLayout.show(false)
 
         setUpToolBar()
     }

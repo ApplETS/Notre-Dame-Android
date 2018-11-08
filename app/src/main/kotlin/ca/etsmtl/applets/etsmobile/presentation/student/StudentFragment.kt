@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ca.etsmtl.applets.etsmobile.R
+import ca.etsmtl.applets.etsmobile.presentation.main.MainActivity
+import ca.etsmtl.applets.etsmobile.util.show
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_student.tabsStudent
 import kotlinx.android.synthetic.main.fragment_student.viewPagerStudent
-import kotlinx.android.synthetic.main.include_toolbar.toolbar
 
 /**
  * This fragment contains a [TabLayout] and a [ViewPager] that let the user switch between
@@ -34,10 +34,20 @@ class StudentFragment : DaggerFragment() {
 
         context?.let {
             viewPagerStudent.adapter = StudentPagerAdapter(it, childFragmentManager)
-            tabsStudent.setupWithViewPager(viewPagerStudent)
+            (activity as? MainActivity)?.getTabLayout()?.let {
+                it.setupWithViewPager(viewPagerStudent)
+                it.show(true)
+            }
         }
+    }
 
-        toolbar.setTitle(R.string.title_student)
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        (activity as? MainActivity)?.getTabLayout()?.let {
+            it.removeAllTabs()
+            it.show(false)
+        }
     }
 
     companion object {

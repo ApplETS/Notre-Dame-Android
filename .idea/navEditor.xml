@@ -8,19 +8,19 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="dashboardFragment">
+                  <entry key="navigation_dashboard">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="40" />
-                            <option name="y" value="40" />
+                            <option name="x" value="11" />
+                            <option name="y" value="34" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="etsFragment">
+                  <entry key="navigation_ets">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -32,7 +32,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="moreFragment">
+                  <entry key="navigation_more">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -44,7 +44,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="scheduleFragment">
+                  <entry key="navigation_schedule">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -56,7 +56,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="studentFragment">
+                  <entry key="navigation_student">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">

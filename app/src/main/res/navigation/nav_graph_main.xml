@@ -8,26 +8,26 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="ca.etsmtl.applets.etsmobile.presentation.dashboard.DashboardFragment"
-        android:label="fragment_dashboard"
+        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/navigation_schedule"
         android:name="ca.etsmtl.applets.etsmobile.presentation.schedule.ScheduleFragment"
-        android:label="fragment_schedule"
+        android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule" />
     <fragment
         android:id="@+id/navigation_student"
         android:name="ca.etsmtl.applets.etsmobile.presentation.student.StudentFragment"
-        android:label="fragment_student"
+        android:label="@string/title_student"
         tools:layout="@layout/fragment_student" />
     <fragment
         android:id="@+id/navigation_ets"
         android:name="ca.etsmtl.applets.etsmobile.presentation.ets.EtsFragment"
-        android:label="fragment_ets"
+        android:label="@string/title_ets"
         tools:layout="@layout/fragment_ets" />
     <fragment
         android:id="@+id/navigation_more"
         android:name="ca.etsmtl.applets.etsmobile.presentation.more.MoreFragment"
-        android:label="fragment_more"
+        android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
 </navigation>

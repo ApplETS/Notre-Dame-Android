@@ -19,7 +19,6 @@ import ca.etsmtl.applets.etsmobile.util.EventObserver
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_more.progressMore
 import kotlinx.android.synthetic.main.fragment_more.recyclerViewMore
-import kotlinx.android.synthetic.main.include_toolbar.toolbar
 import javax.inject.Inject
 
 class MoreFragment : DaggerFragment() {
@@ -53,8 +52,6 @@ class MoreFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        toolbar.setTitle(R.string.title_more)
 
         setUpRecyclerView()
 
