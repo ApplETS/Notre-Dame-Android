@@ -7,7 +7,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.presentation.BaseActivity
-import ca.etsmtl.applets.etsmobile.util.show
 import kotlinx.android.synthetic.main.activity_main.appBarLayout
 import kotlinx.android.synthetic.main.activity_main.navigation
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -32,9 +31,11 @@ class MainActivity : BaseActivity() {
 
         navigation.setupWithNavController(navController)
         navigation.setOnNavigationItemSelectedListener { item ->
-            appBarLayout.show(true)
-
-            NavigationUI.onNavDestinationSelected(item, navController)
+            NavigationUI.onNavDestinationSelected(item, navController).apply {
+                if (this) {
+                    appBarLayout.setExpanded(true, false)
+                }
+            }
         }
 
         val appBarConfiguration = AppBarConfiguration(setOf(

@@ -24,5 +24,4 @@ class DashboardFragment : Fragment() {
     companion object {
         fun newInstance() = DashboardFragment()
     }
-
 }
