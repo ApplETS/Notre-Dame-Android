@@ -1,12 +1,12 @@
 package ca.etsmtl.applets.etsmobile.presentation.student
 
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ca.etsmtl.applets.etsmobile.R
-import ca.etsmtl.applets.etsmobile.presentation.main.MainFragment
+import com.google.android.material.tabs.TabLayout
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_student.tabsStudent
 import kotlinx.android.synthetic.main.fragment_student.viewPagerStudent
 import kotlinx.android.synthetic.main.include_toolbar.toolbar
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.include_toolbar.toolbar
  * Created by Sonphil on 24-02-18.
  */
 
-class StudentFragment : MainFragment() {
+class StudentFragment : DaggerFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
