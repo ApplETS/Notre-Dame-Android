@@ -31,10 +31,14 @@ class MainActivity : BaseActivity() {
 
         navigation.setupWithNavController(navController)
         navigation.setOnNavigationItemSelectedListener { item ->
-            NavigationUI.onNavDestinationSelected(item, navController).apply {
-                if (this) {
-                    appBarLayout.setExpanded(true, false)
+            if (!item.isChecked) {
+                NavigationUI.onNavDestinationSelected(item, navController).apply {
+                    if (this) {
+                        appBarLayout.setExpanded(true, false)
+                    }
                 }
+            } else {
+                false
             }
         }
 
