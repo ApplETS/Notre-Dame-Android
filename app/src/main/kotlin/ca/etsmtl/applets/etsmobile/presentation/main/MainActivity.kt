@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
             if (!item.isChecked) {
                 NavigationUI.onNavDestinationSelected(item, navController).apply {
                     if (this) {
-                        appBarLayout.setExpanded(true, false)
+                        appBarLayout.setExpanded(true, true)
                     }
                 }
             } else {
