@@ -1,13 +1,13 @@
 package ca.etsmtl.applets.etsmobile.presentation.grades
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import ca.etsmtl.applets.etsmobile.domain.FetchGradesCoursesUseCase
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.etsmobile.util.Event
@@ -32,7 +32,7 @@ class GradesViewModel @Inject constructor(
         Transformations.map(coursMediatorLiveData) { it.getGenericErrorMessage(app) }
     }
 
-    private val _cours: MutableLiveData<Map<String, List<Cours>>> = MutableLiveData<Map<String, List<Cours>>>()
+    private val _cours: MutableLiveData<Map<String, List<Cours>>> = MutableLiveData()
     val cours: LiveData<Map<String, List<Cours>>> = _cours
 
     val loading: LiveData<Boolean> = Transformations.map(coursMediatorLiveData) {

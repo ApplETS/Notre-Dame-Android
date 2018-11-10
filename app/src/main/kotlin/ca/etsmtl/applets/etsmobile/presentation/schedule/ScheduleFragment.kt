@@ -61,7 +61,7 @@ class ScheduleFragment : DaggerFragment() {
         scheduleViewModel.seances.observe(this, Observer {
             it?.takeIf { it.isNotEmpty() }?.let { adapter.items = it }
         })
-        scheduleViewModel.getShowEmptyView().observe(this, Observer {
+        scheduleViewModel.showEmptyView.observe(this, Observer {
             recyclerViewSchedule.show(!it)
             emptyViewSchedule.show(it)
         })
