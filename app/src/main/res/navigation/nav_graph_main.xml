@@ -24,10 +24,19 @@
         android:id="@+id/navigation_ets"
         android:name="ca.etsmtl.applets.etsmobile.presentation.ets.EtsFragment"
         android:label="@string/title_ets"
-        tools:layout="@layout/fragment_ets" />
+        tools:layout="@layout/fragment_ets" >
+        <action
+            android:id="@+id/action_navigation_ets_to_securityFragment"
+            app:destination="@id/securityFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_more"
         android:name="ca.etsmtl.applets.etsmobile.presentation.more.MoreFragment"
         android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="ca.etsmtl.applets.etsmobile.presentation.security.SecurityFragment"
+        android:label="fragment_security"
+        tools:layout="@layout/fragment_security" />
 </navigation>
