@@ -37,6 +37,6 @@
     <fragment
         android:id="@+id/securityFragment"
         android:name="ca.etsmtl.applets.etsmobile.presentation.security.SecurityFragment"
-        android:label="fragment_security"
+        android:label="@string/security_label"
         tools:layout="@layout/fragment_security" />
 </navigation>
