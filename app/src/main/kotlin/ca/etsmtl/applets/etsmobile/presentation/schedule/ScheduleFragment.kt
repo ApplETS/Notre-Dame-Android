@@ -8,15 +8,12 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.util.EventObserver
 import ca.etsmtl.applets.etsmobile.util.show
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.empty_view_schedule.emptyViewSchedule
-import kotlinx.android.synthetic.main.fragment_schedule.recyclerViewSchedule
-import kotlinx.android.synthetic.main.fragment_schedule.swipeRefreshLayoutSchedule
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject
 
 /**
@@ -30,7 +27,7 @@ class ScheduleFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val adapter: ScheduleAdapter = ScheduleAdapter()
+//    private val adapter: ScheduleAdapter = ScheduleAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +41,7 @@ class ScheduleFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpSwipeRefresh()
-        setUpRecyclerView()
+//        setUpRecyclerView()
         subscribeUI()
     }
 
@@ -53,18 +50,30 @@ class ScheduleFragment : DaggerFragment() {
         swipeRefreshLayoutSchedule.setOnRefreshListener { scheduleViewModel.refresh() }
     }
 
-    private fun setUpRecyclerView() {
-        recyclerViewSchedule.adapter = adapter
-        recyclerViewSchedule.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    private fun onMonthChange(newYear: Int, newMonth: Int) {
+        // Fetch new month
+
+        //
     }
+//    private fun setUpRecyclerView() {
+//        recyclerViewSchedule.adapter = adapter
+//        recyclerViewSchedule.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+//    }
     private fun subscribeUI() {
         scheduleViewModel.seances.observe(this, Observer {
-            it?.takeIf { it.isNotEmpty() }?.let { adapter.items = it }
+//            it?.takeIf { it.isNotEmpty() }?.let { adapter.items = it }
+            it?.takeIf { it.isNotEmpty() }?.let { }
         })
+
+        scheduleViewModel.seances.observe(this, Observer {
+        })
+
         scheduleViewModel.showEmptyView.observe(this, Observer {
-            recyclerViewSchedule.show(!it)
+//            recyclerViewSchedule.show(!it)
+            scheduleWeekView.show(!it)
             emptyViewSchedule.show(it)
         })
+
         scheduleViewModel.loading.observe(this, Observer {
             it?.let { swipeRefreshLayoutSchedule.isRefreshing = it }
         })
