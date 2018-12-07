@@ -13,21 +13,17 @@ import javax.inject.Inject
 /**
 Created by mykaelll87 on 17/11/18
  */
-class FetchCurrentMonthSessionsUseCase @Inject constructor(
+class FetchSessionsUseCase @Inject constructor(
     private val userCredentials: SignetsUserCredentials,
     private val sessionRespository: SessionRepository,
     private val app: App
 ) {
-    operator fun invoke(monthTimeStamp: Long): LiveData<Resource<List<Session>>> {
+    operator fun invoke(): LiveData<Resource<List<Session>>> {
         return Transformations.map(sessionRespository.getSessions(userCredentials) { true }) {
-            val sessions = it.data.orEmpty().filter { session ->
-                monthTimeStamp in session.dateDebut..session.dateFin
-            }
-
             when {
-                it.status == Resource.Status.LOADING -> Resource.loading(sessions)
-                it.status == Resource.Status.ERROR -> Resource.error(it.message ?: app.getString(R.string.error), sessions)
-                else -> Resource.success(sessions)
+                it.status == Resource.Status.LOADING -> Resource.loading(it.data.orEmpty())
+                it.status == Resource.Status.ERROR -> Resource.error(it.message ?: app.getString(R.string.error), it.data.orEmpty())
+                else -> Resource.success(it.data.orEmpty())
             }
         }
     }

@@ -4,36 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ca.etsmtl.applets.etsmobile.presentation.schedule.ScheduleFragment">
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayoutSchedule"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:context="ca.etsmtl.applets.etsmobile.presentation.schedule.ScheduleFragment"
+    android:layout_marginBottom="@dimen/design_bottom_navigation_height"
+    tools:ignore="PrivateResource">
 
         <include
             layout="@layout/empty_view_schedule"
             android:visibility="gone" />
-
-        <!--<androidx.recyclerview.widget.RecyclerView-->
-            <!--android:id="@+id/recyclerViewSchedule"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--tools:listitem="@layout/item_schedule" />-->
-        <com.alamkanak.weekview.WeekView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scheduleWeekView"
-            app:eventTextColor="@color/etsRougeFonce"
-            app:noOfVisibleDays="1"
-            app:hourHeight="60dp"
-            app:headerColumnPadding="8dp"
-            app:headerRowBackgroundColor="@color/etsRougeClair"
-            app:headerColumnTextColor="@color/etsGrisClair"
-            app:todayHeaderTextColor="@color/colorToolbarText"
-            app:columnGap="4dp"
-
-            />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <com.alamkanak.weekview.WeekView
+                android:id="@+id/scheduleWeekView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:eventTextColor="@android:color/white"
+                app:textSize="12sp"
+                app:hourHeight="60dp"
+                app:headerColumnPadding="8dp"
+                app:headerColumnTextColor="@color/material_red_100"
+                app:headerRowPadding="12dp"
+                app:columnGap="8dp"
+                app:noOfVisibleDays="3"
+                app:headerRowBackgroundColor="@color/etsRougeClair"
+                app:dayBackgroundColor="#05000000"
+                app:todayBackgroundColor="#1848adff"
+                app:headerColumnBackground="#ffffffff"
+                app:todayHeaderTextColor="@color/colorToolbarText" />
 </FrameLayout>
 

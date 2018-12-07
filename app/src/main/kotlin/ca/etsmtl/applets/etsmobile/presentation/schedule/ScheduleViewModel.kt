@@ -7,22 +7,19 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import ca.etsmtl.applets.etsmobile.R
-import ca.etsmtl.applets.etsmobile.domain.FetchCurrentSessionSeancesUseCase
+import ca.etsmtl.applets.etsmobile.domain.FetchSessionsSeancesUseCase
 import ca.etsmtl.applets.etsmobile.presentation.App
 import ca.etsmtl.applets.etsmobile.util.Event
-import ca.etsmtl.applets.etsmobile.util.isDeviceConnected
+import ca.etsmtl.applets.etsmobile.util.getGenericErrorMessage
 import ca.etsmtl.applets.repository.data.model.Resource
 import ca.etsmtl.applets.repository.data.model.Seance
-import ca.etsmtl.applets.repository.data.model.SignetsUserCredentials
 import javax.inject.Inject
 
 /**
  * Created by mykaelll87 on 2018-10-24
  */
 class ScheduleViewModel @Inject constructor(
-    private var userCredentials: SignetsUserCredentials,
-    private val fetchCurrentSessionSeancesUseCase: FetchCurrentSessionSeancesUseCase,
+    private val fetchSessionsSeancesUseCase: FetchSessionsSeancesUseCase,
     private val app: App
 ) : ViewModel(), LifecycleObserver {
     private val seancesMediatorLiveData: MediatorLiveData<Resource<List<Seance>>> by lazy {
@@ -32,16 +29,7 @@ class ScheduleViewModel @Inject constructor(
 
     val errorMessage: LiveData<Event<String?>> by lazy {
         Transformations.map(seancesMediatorLiveData) {
-            if (it.status == Resource.Status.ERROR) {
-                when {
-                    !app.isDeviceConnected() -> {
-                        Event(app.getString(R.string.error_no_internet_connection))
-                    }
-                    else -> Event(app.getString(R.string.error))
-                }
-            } else {
-                Event(it.message)
-            }
+            it.getGenericErrorMessage(app)
         }
     }
     val seances: LiveData<List<Seance>> = Transformations.map(seancesMediatorLiveData) {
@@ -57,7 +45,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     private fun load() {
-        seancesLiveData = fetchCurrentSessionSeancesUseCase(userCredentials).apply {
+        seancesLiveData = fetchSessionsSeancesUseCase().apply {
             seancesMediatorLiveData.addSource(this) {
                 seancesMediatorLiveData.value = it
             }

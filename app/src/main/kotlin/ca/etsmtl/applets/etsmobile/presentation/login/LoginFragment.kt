@@ -137,7 +137,7 @@ class LoginFragment : DaggerFragment() {
      * of the lifecycle
      */
     private fun subscribeUI() {
-        with (loginViewModel) {
+        with(loginViewModel) {
             showLoading.observe(this@LoginFragment, Observer {
                 showProgress(it == true)
             })

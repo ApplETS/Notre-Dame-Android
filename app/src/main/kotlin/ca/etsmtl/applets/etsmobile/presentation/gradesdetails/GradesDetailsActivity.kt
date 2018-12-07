@@ -71,8 +71,8 @@ class GradesDetailsActivity : BaseActivity() {
 
         setUpToolbar()
 
-        with (intent?.extras) {
-            with (this?.getParcelable(EXTRA_COURS) as Cours) {
+        with(intent?.extras) {
+            with(this?.getParcelable(EXTRA_COURS) as Cours) {
                 if (savedInstanceState == null) {
                     addFragment(this)
                 }

@@ -69,7 +69,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun Etudiant.addToSections(sections: MutableList<ProfileItem<out ProfileAdapter.ProfileViewHolder>>) {
-        with (sections) {
+        with(sections) {
             add(ProfileHeaderItem(app.getString(R.string.title_student_status_profile)))
             add(ProfileValueItem(app.getString(R.string.label_balance_profile), soldeTotal))
             add(ProfileHeaderItem(app.getString(R.string.title_personal_information_profile)))
@@ -80,7 +80,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun Programme.addToSections(sections: MutableList<ProfileItem<out ProfileAdapter.ProfileViewHolder>>) {
-        with (sections) {
+        with(sections) {
             add(ProfileHeaderItem(libelle))
             add(ProfileValueItem(app.getString(R.string.label_code_program_profile), code))
             add(ProfileValueItem(app.getString(R.string.label_average_program_profile), moyenne))
