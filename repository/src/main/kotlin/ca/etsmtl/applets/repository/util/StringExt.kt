@@ -42,7 +42,7 @@ fun String.replaceCommaAndParseToDouble() = replaceFirst(",", ".").toDoubleOrNul
  * @return The formatted [String] or the [String] (without formatting) if it can't be parsed
  */
 fun String.toLocaleDate(): String {
-    with (SimpleDateFormat("yyyy-MM-dd")) {
+    with(SimpleDateFormat("yyyy-MM-dd")) {
         return try {
             DateFormat.getDateInstance().format(parse(this@toLocaleDate))
         } catch (e: ParseException) {

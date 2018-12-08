@@ -222,8 +222,8 @@ fun ApiListeDesSeances.toSeancesEntities(session: String): List<SeanceEntity> = 
 fun ApiSession.toSessionEntity() = SessionEntity(
         abrege,
         auLong,
-        dateDebut.dateToUnixms("yyyy-MM-dd") ,
-        dateFin.dateToUnixms("yyyy-MM-dd") ,
+        dateDebut.dateToUnixms("yyyy-MM-dd"),
+        dateFin.dateToUnixms("yyyy-MM-dd"),
         dateFinCours.dateToUnixms("yyyy-MM-dd"),
         dateDebutChemiNot.dateToUnixms("yyyy-MM-dd"),
         dateFinChemiNot.dateToUnixms("yyyy-MM-dd"),
