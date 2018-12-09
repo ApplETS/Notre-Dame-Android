@@ -44,13 +44,8 @@ class ScheduleInnerListAdapter : RecyclerView.Adapter<ScheduleInnerListAdapter.S
         with(items[position]) {
             holder.textViewScheduleTitreCours.text = libelleCours
             holder.textViewScheduleSigleGroup.text = "$sigleCours-$groupe"
+            holder.textViewScheduleType.text = nomActivite
             holder.textViewScheduleLocal.text = local
-            holder.textViewScheduleDayOfWeek.text = DateUtils
-                .formatDateTime(
-                    holder.containerView.context,
-                    dateDebut.time,
-                    DateUtils.FORMAT_SHOW_WEEKDAY
-                )
             holder.textViewScheduleStartTime.text = DateUtils
                 .formatDateTime(
                     holder.containerView.context,

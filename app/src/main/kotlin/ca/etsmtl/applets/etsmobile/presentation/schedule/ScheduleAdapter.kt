@@ -1,5 +1,7 @@
 package ca.etsmtl.applets.etsmobile.presentation.schedule
 
+import android.graphics.Typeface
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +53,15 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.SeanceDayViewHolder
 
     override fun onBindViewHolder(holder: SeanceDayViewHolder, position: Int) {
         with(itemList[position]) {
-            holder.scheduleDay.text = key.toString()
+            holder.scheduleDay.text = DateUtils.formatDateTime(
+                holder.containerView.context,
+                this.key.time,
+                DateUtils.FORMAT_SHOW_WEEKDAY or
+                    DateUtils.FORMAT_SHOW_DATE or
+                    DateUtils.FORMAT_NO_YEAR)
+            if (DateUtils.isToday(key.time)) {
+                holder.scheduleDay.setTypeface(holder.scheduleDay.typeface, Typeface.ITALIC)
+            }
 
             val innerAdapter = ScheduleInnerListAdapter()
             innerAdapter.items = value

@@ -26,11 +26,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/material_component_lists_single_line_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewScheduleLocal"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="12:00" />
 
@@ -56,8 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
-        app:layout_constraintStart_toStartOf="@+id/textViewScheduleTitreCours"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTitreCours"
+        app:layout_constraintStart_toStartOf="@+id/textViewScheduleType"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleType"
         tools:text="Sigle" />
 
     <TextView
@@ -68,17 +67,17 @@
         android:layout_marginBottom="16dp"
         android:textSize="@dimen/material_component_lists_two_line_secondary_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textViewScheduleDayOfWeek"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleDayOfWeek"
+        app:layout_constraintStart_toStartOf="@+id/textViewScheduleSigleGroup"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleSigleGroup"
         tools:text="Groupe" />
 
     <TextView
-        android:id="@+id/textViewScheduleDayOfWeek"
+        android:id="@+id/textViewScheduleType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/textViewScheduleSigleGroup"
-        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleSigleGroup"
-        tools:text="Lundi" />
+        app:layout_constraintStart_toStartOf="@+id/textViewScheduleTitreCours"
+        app:layout_constraintTop_toBottomOf="@+id/textViewScheduleTitreCours"
+        tools:text="Cours" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

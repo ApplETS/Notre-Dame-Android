@@ -17,6 +17,7 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.empty_view_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -76,10 +77,11 @@ class ScheduleFragment : DaggerFragment() {
                     .groupBy { s ->
                         val cal = Calendar.getInstance()
                         cal.clear()
-                        with(s.dateDebut) {
-                            cal.set(year, month, date)
-                        }
-                        cal.time
+                        cal.time = s.dateDebut
+                        cal.set(Calendar.HOUR, 0)
+                        cal.set(Calendar.MINUTE, 0)
+                        cal.set(Calendar.SECOND, 0)
+                        Date(cal.timeInMillis)
                     }
             }
         })
