@@ -28,7 +28,6 @@
                 android:textSize="@dimen/material_component_text_full_width_single_line_text_field_text_top_and_bottom_padding"
                 tools:text="Banane" />
         </FrameLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduleInnerList"
             android:layout_width="match_parent"
@@ -38,6 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scheduleDayFrame"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
             tools:listitem="@layout/sub_item_schedule"/>
 

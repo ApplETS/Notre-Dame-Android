@@ -45,38 +45,18 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.SeanceDayViewHolder
         LayoutInflater.from(parent.context).inflate(R.layout.item_schedule, parent, false)
     )
 
-    override fun getItemCount(): Int = itemList.size
+    override fun getItemCount(): Int {
+        return itemList.count()
+    }
 
     override fun onBindViewHolder(holder: SeanceDayViewHolder, position: Int) {
         with(itemList[position]) {
             holder.scheduleDay.text = key.toString()
 
             val innerAdapter = ScheduleInnerListAdapter()
+            innerAdapter.items = value
             holder.scheduleInnerList.adapter = innerAdapter
         }
-//        with(differ.currentList[position]) {
-//            holder.textViewScheduleTitreCours.text = this.libelleCours
-//            holder.textViewScheduleSigleGroup.text = "$sigleCours-$groupe"
-//            holder.textViewScheduleLocal.text = this.local
-//            holder.textViewScheduleDayOfWeek.text = DateUtils
-//                .formatDateTime(
-//                    holder.containerView.context,
-//                    this.dateDebut.time,
-//                    DateUtils.FORMAT_SHOW_WEEKDAY
-//                )
-//            holder.textViewScheduleStartTime.text = DateUtils
-//                .formatDateTime(
-//                    holder.containerView.context,
-//                    this.dateDebut.time,
-//                    DateUtils.FORMAT_SHOW_TIME
-//                )
-//            holder.textViewScheduleEndTime.text = DateUtils
-//                .formatDateTime(
-//                    holder.containerView.context,
-//                    this.dateFin.time,
-//                    DateUtils.FORMAT_SHOW_TIME
-//                )
-//        }
     }
 
     class SeanceDayViewHolder(override val containerView: View) :

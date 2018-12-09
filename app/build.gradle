@@ -144,9 +144,6 @@ dependencies {
     // FlexboxLayout
     implementation "com.google.android:flexbox:$flexbox"
 
-    //android-week-view
-    implementation "com.github.alamkanak:android-week-view:1.2.6"
-
     implementation project(':repository')
 }
 

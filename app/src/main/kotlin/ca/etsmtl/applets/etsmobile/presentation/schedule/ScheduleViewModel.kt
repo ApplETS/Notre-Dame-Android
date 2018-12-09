@@ -37,13 +37,12 @@ class ScheduleViewModel @Inject constructor(
     }
     private var sessionsLiveData: LiveData<Resource<List<Session>>>? = null
 
-    // TODO binder ça au option menu
-    // TODO binder la valeur à seanceMediatorLiveData
+    // TODO binder ça au option menu des sessions
     val selectedSessionMediatorLiveData: MediatorLiveData<Session> by lazy {
         MediatorLiveData<Session>()
     }
 
-    private val selectedSession: LiveData<Session> = Transformations.map(selectedSessionMediatorLiveData) {
+    val selectedSession: LiveData<Session> = Transformations.map(selectedSessionMediatorLiveData) {
         it
     }
 
@@ -109,14 +108,6 @@ class ScheduleViewModel @Inject constructor(
                 selectedSessionMediatorLiveData.value = currentSession
             }
         }
-
-//        sessionsLiveData = Transformations.map(selectedSessionMediatorLiveData){
-//            fetchSessionSeancesUseCase(it).apply {
-//                seancesMediatorLiveData.addSource(this){
-//                    seancesMediatorLiveData.value = it
-//                }
-//            }
-//        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

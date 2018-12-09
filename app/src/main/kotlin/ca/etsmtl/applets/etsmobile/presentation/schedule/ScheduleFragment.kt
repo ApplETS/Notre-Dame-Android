@@ -16,6 +16,7 @@ import ca.etsmtl.applets.etsmobile.util.show
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.empty_view_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.util.Calendar
 import javax.inject.Inject
 
 /**
@@ -42,7 +43,6 @@ class ScheduleFragment : DaggerFragment() {
 
         setUpSwipeRefresh()
         setUpRecyclerView()
-//        setUpWeekView()
         subscribeUI()
     }
 
@@ -55,50 +55,35 @@ class ScheduleFragment : DaggerFragment() {
         recyclerViewSchedule.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
-//    private fun setUpWeekView() {
-//        scheduleWeekView.setMonthChangeListener { newYear, newMonth ->
-//            val startTime = Calendar.getInstance()
-//            startTime.set(newYear, newMonth - 1, 1, 0, 0)
-//
-//            val endTime = startTime.clone() as Calendar
-//            endTime.add(Calendar.MONTH, 1)
-//            val events = ArrayList<ScheduleEventAdapter>()
-//            scheduleViewModel.seances.value.orEmpty()
-//                /*.filter { s-> s.dateDebut.time in startTime.timeInMillis..endTime.timeInMillis}*/
-//                .forEach { s -> events.add(ScheduleEventAdapter(s)) }
-//            return@setMonthChangeListener events
-//        }
-// //        scheduleWeekView.monthChangeListener = MonthLoader.MonthChangeListener { newYear, newMonth ->
-// //            val startTime = Calendar.getInstance()
-// //            startTime.set(newYear, newMonth-1, 1, 0, 0)
-// //
-// //            val endTime = startTime.clone() as Calendar
-// //            endTime.add(Calendar.MONTH, 1)
-// //            return@MonthChangeListener scheduleViewModel.seances.value
-// //                ?.filter { s-> s.dateDebut.time in startTime.timeInMillis..endTime.timeInMillis}
-// //                .orEmpty().map { s->ScheduleEventAdapter(s) }.toMutableList()
-// //
-// //        }
-//        scheduleWeekView.setOnEventClickListener { event, _ -> Toast.makeText(context, "Clicked " + event.name, Toast.LENGTH_SHORT).show(); }
-//        scheduleWeekView.setEventLongPressListener { event, _ -> Toast.makeText(context, "Long pressed event: " + event.name, Toast.LENGTH_SHORT).show(); }
-//        scheduleWeekView.setEmptyViewLongPressListener { a -> Toast.makeText(context, "Shit ass tits", Toast.LENGTH_LONG).show() }
-// //        scheduleWeekView.dateTimeInterpreter = object :DateTimeInterpreter{
-// //            override fun interpretTime(hour: Int): String {
-// //                return hour.toString()
-// //            }
-// //
-// //            override fun interpretDate(date: Calendar?): String {
-// // //                return DateFormat.getTimeInstance().format(date)
-// //                return date.toString()
-// //            }
-// //        }
-//        scheduleWeekView.defaultEventColor = R.color.etsRougeClair
-//    }
-
     private fun subscribeUI() {
-        scheduleViewModel.seances.observe(this, Observer {
-            it?.takeIf { it.isNotEmpty() }?.let { adapter.items = it }
+        scheduleViewModel.sessions.observe(this, Observer {
+            // TODO utiliser les sessions dans un option menu
         })
+        scheduleViewModel.seances.observe(this, Observer {
+            it?.takeIf { it.isNotEmpty() }?.let { seances ->
+                val thisWeekCal = Calendar.getInstance()
+                val wantedWeek = thisWeekCal.get(Calendar.WEEK_OF_YEAR)
+                val wantedYear = thisWeekCal.get(Calendar.YEAR)
+                adapter.items = seances
+                    .filter { s ->
+                        val dateCal = Calendar.getInstance()
+                        dateCal.time = s.dateDebut
+                        val dateWeek = dateCal.get(Calendar.WEEK_OF_YEAR)
+                        val dateYear = dateCal.get(Calendar.YEAR)
+
+                        wantedWeek == dateWeek && wantedYear == dateYear
+                    } // todo filter for the selected week
+                    .groupBy { s ->
+                        val cal = Calendar.getInstance()
+                        cal.clear()
+                        with(s.dateDebut) {
+                            cal.set(year, month, date)
+                        }
+                        cal.time
+                    }
+            }
+        })
+
         scheduleViewModel.showEmptyView.observe(this, Observer {
             recyclerViewSchedule.show(!it)
             emptyViewSchedule.show(it)
@@ -111,27 +96,12 @@ class ScheduleFragment : DaggerFragment() {
             it?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
         })
 
-        scheduleViewModel.selectedSessionMediatorLiveData.observe(this, Observer {
+        scheduleViewModel.selectedSession.observe(this, Observer {
             scheduleViewModel.loadSeances()
         })
 
         this.lifecycle.addObserver(scheduleViewModel)
     }
-
-//    inner class ScheduleEventAdapter(seance: Seance) : WeekViewEvent(
-//        seance.dateDebut.time,
-//        seance.nomActivite,
-//        seance.dateDebut.year,
-//        seance.dateDebut.month,
-//        seance.dateDebut.day,
-//        seance.dateDebut.hours,
-//        seance.dateDebut.minutes,
-//        seance.dateFin.year,
-//        seance.dateFin.month,
-//        seance.dateFin.day,
-//        seance.dateFin.hours,
-//        seance.dateFin.minutes
-//    )
 
     companion object {
         private const val TAG = "ScheduleFragment"

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ca.etsmtl.applets.repository.R
+import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.repository.data.model.Seance
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sub_item_schedule.*
