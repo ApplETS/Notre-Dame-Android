@@ -84,6 +84,7 @@ class ScheduleFragment : DaggerFragment() {
                         cal.set(Calendar.HOUR, 0)
                         cal.set(Calendar.MINUTE, 0)
                         cal.set(Calendar.SECOND, 0)
+                        cal.set(Calendar.AM_PM, 0)
                         Date(cal.timeInMillis)
                     }
             }
