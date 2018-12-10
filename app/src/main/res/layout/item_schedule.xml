@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_margin="8dp">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp">
     <!--Formatter la carte comme du monde-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scheduleItem"
@@ -15,6 +18,7 @@
             android:id="@+id/scheduleDayFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/etsRougeClair"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,21 +29,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/material_red_100"
                 android:textSize="@dimen/material_component_text_full_width_single_line_text_field_text_top_and_bottom_padding"
-                tools:text="Banane" />
+                tools:text="Lundi" />
         </FrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduleInnerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:headerDividersEnabled="true"
+            android:nestedScrollingEnabled="false"
             android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scheduleDayFrame"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/sub_item_schedule"/>
+            tools:listitem="@layout/sub_item_schedule" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

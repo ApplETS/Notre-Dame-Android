@@ -14,6 +14,7 @@ import ca.etsmtl.applets.etsmobile.R
 import ca.etsmtl.applets.etsmobile.util.EventObserver
 import ca.etsmtl.applets.etsmobile.util.show
 import dagger.android.support.DaggerFragment
+import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator
 import kotlinx.android.synthetic.main.empty_view_schedule.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.Calendar
@@ -51,9 +52,11 @@ class ScheduleFragment : DaggerFragment() {
         swipeRefreshLayoutSchedule.setColorSchemeResources(R.color.colorPrimary)
         swipeRefreshLayoutSchedule.setOnRefreshListener { scheduleViewModel.refresh() }
     }
+
     private fun setUpRecyclerView() {
         recyclerViewSchedule.adapter = adapter
         recyclerViewSchedule.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        recyclerViewSchedule.itemAnimator = FadeInLeftAnimator()
     }
 
     private fun subscribeUI() {

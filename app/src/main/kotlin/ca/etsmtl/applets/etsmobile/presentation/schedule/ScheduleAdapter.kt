@@ -5,6 +5,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ca.etsmtl.applets.etsmobile.R
@@ -61,6 +62,7 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.SeanceDayViewHolder
                     DateUtils.FORMAT_NO_YEAR)
             if (DateUtils.isToday(key.time)) {
                 holder.scheduleDay.setTypeface(holder.scheduleDay.typeface, Typeface.ITALIC)
+                holder.scheduleDay.setTextColor(ContextCompat.getColor(holder.containerView.context, R.color.material_light_white))
             }
 
             val innerAdapter = ScheduleInnerListAdapter()
